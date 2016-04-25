@@ -1,0 +1,9 @@
+{
+  "name": "jornwoodrecipe",
+  "version": "0.0.1",
+  "title": "Jorn's wood recipe",
+  "author": "Jorn86",
+  "contact": "factoriomods@hertsig.org",
+  "description": "Early tech gives a way to create raw wood",
+  "dependencies": ["base >= 0.12.29"]
+}

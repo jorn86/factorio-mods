@@ -1,0 +1,9 @@
+{
+  "name": "jorntest",
+  "version": "0.0.1",
+  "title": "Jorn's testing mod",
+  "author": "Jorn86",
+  "contact": "factoriomods@hertsig.org",
+  "description": "Adds a bunch of materials on game start for easy mod testing",
+  "dependencies": ["base >= 0.12.29"]
+}
