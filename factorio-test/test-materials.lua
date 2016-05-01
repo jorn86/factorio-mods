@@ -28,6 +28,17 @@ local function insertCombat(player)
     --    insert(player, "explosive-cannon-shell", 200)
 end
 
+local function insertRocket(player)
+    insert(player, "steel-chest", 6)
+    insert(player, "fast-inserter", 6)
+    insert(player, "rocket-silo", 1)
+    insert(player, "rocket-fuel", 1000)
+    insert(player, "rocket-control-unit", 1000)
+    insert(player, "low-density-structure", 1000)
+    insert(player, "satellite", 1)
+    insert(player, "speed-module-3", 4)
+end
+
 function allInserts(player)
     insert(player, "wood", 100)
     insert(player, "coal", 1000)
@@ -46,7 +57,8 @@ function allInserts(player)
     insert(player, "assembling-machine-1", 10)
     insert(player, "assembling-machine-2", 10)
 
-    --    insertCombat(player)
-    insertScience(player)
+--    insertCombat(player)
+--    insertScience(player)
     insertRail(player)
+--    insertRocket(player)
 end

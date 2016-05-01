@@ -30,5 +30,7 @@ end
 
 function allUnlocks(player)
     local techs = player.force.technologies
+--    unlockConditional(techs, onlyRed)
     unlockConditional(techs, onlyRedAndGreen)
+--    unlockConditional(techs, function() return true end)
 end
