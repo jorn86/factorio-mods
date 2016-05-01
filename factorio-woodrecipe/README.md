@@ -1,4 +1,4 @@
-[Factorio](factorio.com) mod to create raw wood
+Factorio mod to create raw wood
 -----------------------------------------------
 
 This mod adds a technology, which allows you to research a recipe to create raw wood

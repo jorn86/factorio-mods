@@ -1,4 +1,4 @@
-[Factorio](factorio.com) mod for testing other mods quickly
+Factorio mod for testing other mods quickly
 -----------------------------------------------------------
 
 This mod adds a bunch of stuff to your inventory on game start.
