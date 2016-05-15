@@ -1,3 +1,5 @@
+local serpent = require "serpent"
+
 local function unlock(tech)
     tech.researched = true
 end
@@ -21,6 +23,7 @@ local function onlyRedAndGreen(tech)
 end
 
 local function unlockConditional(techs, condition)
+    print(serpent.block(techs))
     for _, tech in pairs(techs) do
         if condition(tech) then
             unlock(tech)
@@ -31,6 +34,6 @@ end
 function allUnlocks(player)
     local techs = player.force.technologies
 --    unlockConditional(techs, onlyRed)
-    unlockConditional(techs, onlyRedAndGreen)
+--    unlockConditional(techs, onlyRedAndGreen)
 --    unlockConditional(techs, function() return true end)
 end

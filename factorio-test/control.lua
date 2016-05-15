@@ -1,6 +1,7 @@
 require "defines"
 require "test-materials"
 require "test-technologies"
+serpent = require "serpent"
 
 local function init(player)
     allInserts(player)

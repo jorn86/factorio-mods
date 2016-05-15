@@ -57,6 +57,9 @@ function allInserts(player)
     insert(player, "assembling-machine-1", 10)
     insert(player, "assembling-machine-2", 10)
 
+    insert(player, "warehouse", 10)
+    insert(player, "warehouse-logistics", 10)
+
 --    insertCombat(player)
 --    insertScience(player)
     insertRail(player)

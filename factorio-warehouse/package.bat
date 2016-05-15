@@ -1,7 +1,7 @@
 @echo off
 
 SET version=0.0.1
-SET name=jorntest_%version%
+SET name=jornwarehouse_%version%
 
 rm %name%.zip
 mkdir %name%
