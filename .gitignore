@@ -1,3 +1,5 @@
 *.iml
 .idea/
 log*
+**/target/
+*.zip
