@@ -1,0 +1,11 @@
+{
+  "name": "quickstart",
+  "version": "0.0.3",
+  "title": "Configurable quick start",
+  "author": "Jorn86",
+  "homepage": "https://github.com/jorn86/factorio-mods",
+  "contact": "factoriomods@hertsig.org",
+  "description": "Allows configurable starting equipment, anything from equipment and bots to steam engines and miners",
+  "factorio_version": "0.17",
+  "dependencies": ["base >= 0.17.43", "? aai-industry >= 0.3.6"]
+}
