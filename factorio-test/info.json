@@ -5,5 +5,5 @@
   "author": "Jorn86",
   "contact": "factoriomods@hertsig.org",
   "description": "Adds a bunch of materials on game start for easy mod testing",
-  "dependencies": ["base >= 0.12.29"]
+  "dependencies": ["base >= 0.17.43"]
 }

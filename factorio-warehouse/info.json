@@ -1,9 +1,0 @@
-{
-  "name": "jornwarehouse",
-  "version": "0.0.1",
-  "title": "Jorn's warehouses",
-  "author": "Jorn86",
-  "contact": "factoriomods@hertsig.org",
-  "description": "Create warehouse versions of steel and logistic storage chests",
-  "dependencies": ["base >= 0.12.33"]
-}
