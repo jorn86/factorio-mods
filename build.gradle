@@ -1,0 +1,30 @@
+import groovy.json.JsonSlurper
+
+def factorioInstallationFolder = 'C:\\Factorio_standalone'
+
+subprojects {
+    apply plugin: 'base'
+
+    task zip(type: Zip) {
+        def info = new JsonSlurper().parse(file('info.json'))
+        def name = "${info.name}_${info.version}"
+
+        from '.'
+        into name
+        include 'info.json'
+        include 'README.md'
+        include 'changelog.txt'
+        include '**/*.lua'
+        include 'graphics/**'
+        include 'locale/**'
+        archiveFileName.set("${name}.zip")
+        destinationDirectory = file('build')
+    }
+    assemble.dependsOn(zip)
+
+    task deploy(type: Copy) {
+        from 'build'
+        into "${factorioInstallationFolder}\\mods"
+    }
+    deploy.dependsOn(build)
+}

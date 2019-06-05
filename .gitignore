@@ -1,5 +1,3 @@
-*.iml
+.gradle
+build
 .idea/
-log*
-**/target/
-*.zip
