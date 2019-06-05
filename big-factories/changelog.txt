@@ -1,0 +1,20 @@
+---------------------------------------------------------------------------------------------------
+Version: 0.0.3
+Date: 16.06.2019
+  Changes:
+    - Added labs
+    - Added more buildings from Bob's and Angel's
+---------------------------------------------------------------------------------------------------
+Version: 0.0.2
+Date: 09.06.2019
+  Changes:
+    - Generated loaders are now always input. You can manually rotate them and choose where you want the output. Loaders can be filtered, for when you have recipes with multiple solid outputs.
+    - Added energy required (build time) to big building recipe
+    - Tweaked some spawn ratios: Angel's smelting buildings will spawn twice as often
+---------------------------------------------------------------------------------------------------
+Version: 0.0.1
+Date: 08.06.2019
+  Features:
+    - Initial release. Adds big versions of most crafting machines.
+    - Optional support for most of Bob's and Angel's mods
+    - Configurable speed and size factors

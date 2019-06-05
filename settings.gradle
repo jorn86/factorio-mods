@@ -1,3 +1,4 @@
+include "big-factories"
 include "early-logistics"
 include "improved-ftl"
 include "quickstart"
