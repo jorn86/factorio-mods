@@ -16,7 +16,10 @@ end
 local eventHandler = function(event)
     local p = game.get_player(event.player_index)
     if (settings.global["quickstart-clear"].value) then
-        p.get_main_inventory().clear()
+        p.get_inventory(defines.inventory.character_main).clear()
+        p.get_inventory(defines.inventory.character_guns).clear()
+        p.get_inventory(defines.inventory.character_ammo).clear()
+        p.get_inventory(defines.inventory.character_armor).clear()
     end
 
     insertVanilla(p,"modular-armor")
@@ -50,15 +53,19 @@ local eventHandler = function(event)
     insertVanilla(p,"electric-mining-drill")
     insertVanilla(p,"stone-furnace")
     insertVanilla(p,"steel-furnace")
+    insertVanilla(p,"burner-inserter")
     insertVanilla(p,"inserter")
     insertVanilla(p,"long-handed-inserter")
     insertVanilla(p,"fast-inserter")
     insertVanilla(p,"lab")
     insertVanilla(p,"radar")
+    insertVanilla(p,"pistol")
+    insertVanilla(p,"submachine-gun")
     insertVanilla(p,"gun-turret")
     insertVanilla(p,"firearm-magazine")
     insertVanilla(p,"piercing-rounds-magazine")
     insertVanilla(p,"cliff-explosives")
+    insertVanilla(p,"car")
 
     if (game.active_mods["aai-industry"]) then
         insertModded(p, "aai-industry", "glass")

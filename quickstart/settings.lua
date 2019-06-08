@@ -81,10 +81,13 @@ data:extend({
     vanilla("fast-inserter", 0, "entity"),
     vanilla("lab", 0, "entity"),
     vanilla("radar", 0, "entity"),
+    vanilla("pistol", 0, "item"),
+    vanilla("submachine-gun", 0, "item"),
     vanilla("gun-turret", 0, "entity"),
     vanilla("firearm-magazine", 0, "item"),
     vanilla("piercing-rounds-magazine", 0, "item"),
     vanilla("cliff-explosives", 0, "item"),
+    vanilla("car", 0, "entity"),
 })
 
 if mods["aai-industry"] then

@@ -1,0 +1,26 @@
+---------------------------------------------------------------------------------------------------
+Version: 0.0.4
+Date: 08.06.2019
+  Features:
+    - Added settings for gun, submachine gun, normal and piercing ammo and car
+  Bugfixes:
+    - Burner inserters are now actually inserted according to the setting
+  Changes:
+    - If the 'Clear inventory' setting is enabled, now also clears gun, ammo and armor inventories before inserting items
+    - Updated changelog to use the Factorio-supported format (down from markdown)
+---------------------------------------------------------------------------------------------------
+Version: 0.0.3
+Date: 25.05.2019
+  Changes:
+    - Settings for AAI Industry are now hidden if it is not installed
+---------------------------------------------------------------------------------------------------
+Version: 0.0.2
+Date: 25.05.2019
+  Features:
+    - Added settings for Cliff explosives
+    - Added several items from the AAI Industry mod, as optional dependency
+---------------------------------------------------------------------------------------------------
+Version: 0.0.1
+Date: 25.05.2019
+  Features:
+    - Initial release. Adds many items from the base game.
