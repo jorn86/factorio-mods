@@ -1,0 +1,5 @@
+---------------------------------------------------------------------------------------------------
+Version: 0.0.1
+Date: 25.05.2019
+  Features:
+    - Initial release. Disables the FTL theory A trough D1&2, and replaces them with a single research that unlocks a different type of satellite. Updates the final FTL tech to require science provided by launching that satellite.
