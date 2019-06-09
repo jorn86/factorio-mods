@@ -95,6 +95,12 @@ if mods["aai-industry"] then
         mod("aai-industry", "glass", "item"),
         mod("aai-industry", "burner-turbine", "entity"),
         mod("aai-industry", "small-iron-electric-pole", "entity"),
-        mod("aai-industry", "burner-lab", "entity")
+        mod("aai-industry", "burner-lab", "entity"),
+    })
+end
+
+if mods["Raven"] then
+    data:extend({
+        mod("raven", "raven-1", "item"),
     })
 end

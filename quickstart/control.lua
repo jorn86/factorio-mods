@@ -73,6 +73,9 @@ local eventHandler = function(event)
         insertModded(p, "aai-industry", "small-iron-electric-pole")
         insertModded(p, "aai-industry", "burner-lab")
     end
+    if (game.active_mods["Raven"]) then
+        insertModded(p, "raven", "raven-1")
+    end
 end
 
 script.on_event(defines.events.on_player_created, eventHandler)
