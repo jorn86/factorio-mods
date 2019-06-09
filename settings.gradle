@@ -1,3 +1,4 @@
+include "early-logistics"
 include "improved-ftl"
 include "quickstart"
 include "WhistleStop-extended"

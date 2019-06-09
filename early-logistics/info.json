@@ -1,0 +1,11 @@
+{
+  "name": "early-logistics",
+  "version": "0.0.1",
+  "title": "Early logistics system",
+  "author": "Jorn86",
+  "homepage": "https://github.com/jorn86/factorio-mods",
+  "contact": "factoriomods@hertsig.org",
+  "description": "Removes the Utility science pack requirement from Logistics research, allowing access to it earlier in the game",
+  "factorio_version": "0.17",
+  "dependencies": ["base >= 0.17.43", "? space-exploration >= 0.1.92"]
+}
