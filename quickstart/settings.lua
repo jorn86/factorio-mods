@@ -23,7 +23,7 @@ local function mod(modname, name, resourceGroup)
         default_value = 0,
         minimum_value = 0,
         maximum_value = 9999,
-        order = "order" .. order,
+        order = "quickstart-" .. order,
         setting_type = "runtime-global"
     }
 end
