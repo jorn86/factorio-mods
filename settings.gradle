@@ -1,3 +1,4 @@
+include "automatic-handcrafting"
 include "big-factories"
 include "early-logistics"
 include "homeworld"
