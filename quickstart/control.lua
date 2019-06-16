@@ -68,10 +68,19 @@ local eventHandler = function(event)
     insertVanilla(p,"car")
 
     if (game.active_mods["aai-industry"]) then
-        insertModded(p, "aai-industry", "glass")
-        insertModded(p, "aai-industry", "burner-turbine")
-        insertModded(p, "aai-industry", "small-iron-electric-pole")
-        insertModded(p, "aai-industry", "burner-lab")
+        insertModded(p, "aai", "glass")
+        insertModded(p, "aai", "burner-turbine")
+        insertModded(p, "aai", "small-iron-electric-pole")
+        insertModded(p, "aai", "burner-lab")
+    end
+    if (game.active_mods["bobgreenhouse"]) then
+        insertModded(p, "bob", "bob-greenhouse")
+    end
+    if (game.active_mods["bobplates"]) then
+        insertModded(p, "bob", "chemical-boiler")
+        insertModded(p, "bob", "bob-distillery")
+        insertModded(p, "bob", "electrolyser")
+        insertModded(p, "bob", "mixing-furnace")
     end
     if (game.active_mods["Raven"]) then
         insertModded(p, "raven", "raven-1")

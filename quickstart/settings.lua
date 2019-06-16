@@ -71,7 +71,7 @@ data:extend({
     vanilla("medium-electric-pole", 0, "entity"),
     vanilla("big-electric-pole", 0, "entity"),
     vanilla("landfill", 0, "item"),
-    vanilla("burner-mining-drill", 20, "entity"),
+    vanilla("burner-mining-drill", 0, "entity"),
     vanilla("electric-mining-drill", 20, "entity"),
     vanilla("stone-furnace", 50, "entity"),
     vanilla("steel-furnace", 0, "entity"),
@@ -92,10 +92,25 @@ data:extend({
 
 if mods["aai-industry"] then
     data:extend({
-        mod("aai-industry", "glass", "item"),
-        mod("aai-industry", "burner-turbine", "entity"),
-        mod("aai-industry", "small-iron-electric-pole", "entity"),
-        mod("aai-industry", "burner-lab", "entity"),
+        mod("aai", "glass", "item"),
+        mod("aai", "burner-turbine", "entity"),
+        mod("aai", "small-iron-electric-pole", "entity"),
+        mod("aai", "burner-lab", "entity"),
+    })
+end
+
+if (mods['bobgreenhouse']) then
+    data:extend({
+        mod("bob", "bob-greenhouse", "entity"),
+    })
+end
+
+if (mods['bobplates']) then
+    data:extend({
+        mod("bob", "chemical-boiler", "entity"),
+        mod("bob", "bob-distillery", "entity"),
+        mod("bob", "electrolyser", "entity"),
+        mod("bob", "mixing-furnace", "entity"),
     })
 end
 
