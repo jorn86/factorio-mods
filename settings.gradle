@@ -1,5 +1,6 @@
 include "big-factories"
 include "early-logistics"
+include "homeworld"
 include "improved-ftl"
 include "move-with-mouse"
 include "quickstart"

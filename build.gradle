@@ -18,6 +18,7 @@ subprojects {
         include 'graphics/**'
         include 'locale/**'
         include 'migrations/**'
+        include 'sound/**'
         archiveFileName.set("${name}.zip")
         destinationDirectory = file('build')
     }
