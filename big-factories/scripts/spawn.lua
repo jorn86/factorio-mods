@@ -22,8 +22,10 @@ local function doSpawn(center, surface, entityname)
     local force = game.forces.player
     if surface.can_place_entity{name=entityname, position=center, force=force, build_check_type=defines.build_check_type.ghost_place, forced=true} and clearArea(center, surface) then
         local entity = surface.create_entity{name=entityname, position=center, force=force, raise_built=true}
-        script.raise_event(defines.events.script_raised_built, {entity=entity, created_entity=entity})
-        return true
+        if (entity) then
+            script.raise_event(defines.events.script_raised_built, {entity=entity, created_entity=entity})
+            return true
+        end
     end
     return false
 end

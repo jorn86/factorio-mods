@@ -1,4 +1,9 @@
 ---------------------------------------------------------------------------------------------------
+Version: 0.0.4
+Date: 16.06.2019
+  Bugfixes:
+    - Fixed that the mod sometimes sent a `script_raised_built` event with `nil` entity, causing crashes when used with other mods that received the event
+---------------------------------------------------------------------------------------------------
 Version: 0.0.3
 Date: 16.06.2019
   Changes:
