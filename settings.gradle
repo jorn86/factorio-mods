@@ -1,6 +1,7 @@
 include "big-factories"
 include "early-logistics"
 include "improved-ftl"
+include "move-with-mouse"
 include "quickstart"
 include "quickstart-tech"
 include "WhistleStop-extended"
