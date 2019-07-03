@@ -1,11 +1,11 @@
 function baseValue(box)
     -- consistency between data and control stage is hard :(
-    if (box['left_top']) then return baseValue({ { box.left_top.x, box.left_top.y } , { box.right_bottom.x, box.right_bottom.y } } ) end
+    if (box["left_top"]) then return baseValue({ { box.left_top.x, box.left_top.y } , { box.right_bottom.x, box.right_bottom.y } } ) end
 
     local baseValue = box[2][1]
-    if (box[1][1] ~= -baseValue) then error('inconsistent box top left: expected ' .. tostring(-baseValue) .. ' actual ' , box[1][1]) end
-    if (box[1][2] ~= -baseValue) then error('inconsistent box top right: expected ' .. tostring(-baseValue) .. ' actual ' , box[1][2]) end
-    if (box[2][2] ~= baseValue) then error('inconsistent box bottom right: expected ' .. tostring(baseValue) .. ' actual ' , box[2][2]) end
+    if (box[1][1] ~= -baseValue) then error("inconsistent box top left: expected " .. tostring(-baseValue) .. " actual " , box[1][1]) end
+    if (box[1][2] ~= -baseValue) then error("inconsistent box top right: expected " .. tostring(-baseValue) .. " actual " , box[1][2]) end
+    if (box[2][2] ~= baseValue) then error("inconsistent box bottom right: expected " .. tostring(baseValue) .. " actual " , box[2][2]) end
     return baseValue
 end
 
@@ -45,7 +45,7 @@ function findTechThatUnlocks(recipeName)
             end
         end
     end
-    print('no recipe found for ' .. recipeName)
+    print("no recipe found for " .. recipeName)
     error()
 end
 

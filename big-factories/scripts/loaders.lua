@@ -42,5 +42,6 @@ end
 function entityBuilt(event)
     local entity = event.created_entity or event.entity
     if not (entity and entity.valid) then return end
+    if not (settings.startup["bf-loaders"].value) then return end
     generateLoaders(entity)
 end

@@ -1,29 +1,29 @@
-require('util')
-require('scripts.utility')
-local adjustVisuals = require('scripts.adjustVisuals')
+require("util")
+require("scripts.utility")
+local adjustVisuals = require("scripts.adjustVisuals")
 
-local sizeFactor = settings.startup['bf-size-factor'].value
-local speedFactor = settings.startup['bf-speed-factor'].value
-local minable = settings.startup['bf-minable'].value
-local craftable = settings.startup['bf-craftable'].value
-local moduleSlots = settings.startup['bf-module-slots'].value
-local scaleIcon = settings.startup['bf-scale-icon'].value
+local sizeFactor = settings.startup["bf-size-factor"].value
+local speedFactor = settings.startup["bf-speed-factor"].value
+local minable = settings.startup["bf-minable"].value
+local craftable = settings.startup["bf-craftable"].value
+local moduleSlots = settings.startup["bf-module-slots"].value
+local scaleIcon = settings.startup["bf-scale-icon"].value
 local flags = {"placeable-neutral", "placeable-player", "player-creation"}
 if not minable then table.insert(flags, "not-deconstructable") end
 if not (minable or craftable) then table.insert(flags, "not-blueprintable") end
 
 local bigName = function(itemOrEntity)
     if (itemOrEntity.localised_name) then
-        return {'', 'Big ', itemOrEntity.localised_name}
+        return {"", "Big ", itemOrEntity.localised_name}
     else
-        return {'', 'Big ', {'entity-name.' .. itemOrEntity.name}}
+        return {"", "Big ", {"entity-name." .. itemOrEntity.name}}
     end
 end
 
 local bigItem = function(item)
     local bigItem = util.table.deepcopy(item)
-    bigItem.name = 'bf-' .. item.name
-    bigItem.localised_name = {'', 'Big ', {'entity-name.' .. item.name}}
+    bigItem.name = "bf-" .. item.name
+    bigItem.localised_name = {"", "Big ", {"entity-name." .. item.name}}
     bigItem.place_result = bigItem.name
     bigItem.subgroup = "production-machine"
     bigItem.order = "z[" .. item.name .. "]"
@@ -57,7 +57,7 @@ local bigTechnology = function(item)
 end
 
 local bigRecipe = function(item)
-    local name = 'bf-' .. item.name
+    local name = "bf-" .. item.name
     return {
         type = "recipe",
         name = name,
@@ -102,7 +102,7 @@ end
 local scaleSize = function(entity)
     local oldSize = baseValue(entity.selection_box)
     local oldCollision = baseValue(entity.collision_box)
-    if (oldSize < oldCollision) then error('for ' .. entity.name .. ' size base value ' .. oldSize ' is smaller than collision base value ' .. oldCollision) end
+    if (oldSize < oldCollision) then error("for " .. entity.name .. " size base value " .. oldSize " is smaller than collision base value " .. oldCollision) end
 
     local collisionOffset = oldSize - oldCollision
     local newSize = oldSize * sizeFactor
@@ -113,7 +113,7 @@ local scaleSize = function(entity)
     if entity.fluid_boxes then
         local offset = newCollision - oldCollision
         for _, box in pairs(entity.fluid_boxes) do
-            if (type(box) == 'table') then
+            if (type(box) == "table") then
                 if (box.base_area) then
                     box.base_area = box.base_area * 10
                 end
@@ -128,7 +128,7 @@ end
 
 local bigEntity = function(entity)
     local bigEntity = util.table.deepcopy(entity)
-    bigEntity.name = 'bf-' .. entity.name
+    bigEntity.name = "bf-" .. entity.name
     bigEntity.localised_name = bigName(entity)
     if bigEntity.crafting_speed then bigEntity.crafting_speed = entity.crafting_speed * speedFactor end
     if bigEntity.researching_speed then bigEntity.researching_speed = entity.researching_speed * speedFactor end
@@ -140,7 +140,7 @@ local bigEntity = function(entity)
     bigEntity.flags = flags
     bigEntity.create_ghost_on_death = minable or craftable
     bigEntity.scale_entity_info_icon = scaleIcon
-    bigEntity.order = 'zzz'
+    bigEntity.order = "zzz"
     scaleSize(bigEntity)
 
     if minable then
@@ -173,8 +173,8 @@ return function(factories)
     for _, def in pairs(factories) do
         local entity = data.raw[def[1]][def[2]]
         local item = data.raw.item[def[2]]
-        if (type(entity) ~= 'table') or (type(item) ~= 'table') then
-            print('Missing item: ' .. def[1] .. '.' .. def[2])
+        if (type(entity) ~= "table") or (type(item) ~= "table") then
+            print("Missing item: " .. def[1] .. "." .. def[2])
         else
             generateMachine(item, entity)
         end
