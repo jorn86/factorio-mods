@@ -7,13 +7,13 @@ Date: 03.07.2019
     - Added setting to suppress generating loaders on positions with fluid boxes
 ---------------------------------------------------------------------------------------------------
 Version: 0.0.4
-Date: 16.06.2019
+Date: 30.06.2019
   Bugfixes:
     - Fixed that the mod sometimes sent a `script_raised_built` event with `nil` entity, causing crashes when used with other mods that received the event
 ---------------------------------------------------------------------------------------------------
 Version: 0.0.3
 Date: 16.06.2019
-  Changes:
+  Features:
     - Added labs
     - Added more buildings from Bob's and Angel's
 ---------------------------------------------------------------------------------------------------
