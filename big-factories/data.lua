@@ -26,6 +26,32 @@ data:extend({
         },
         result = "bf-big-building",
     },
+    {
+        type = "shortcut",
+        name = "bf-loader-tool",
+        action = "create-blueprint-item",
+        item_to_create = "bf-loader-tool",
+        icon = { filename = "__base__/graphics/icons/loader.png", size = 32 },
+    },
+    {
+        type = "selection-tool",
+        name = "bf-loader-tool",
+        icon = "__base__/graphics/icons/loader.png",
+        icon_size = 32,
+        subgroup = "other",
+        order = "bf-zzz",
+        stack_size = 1,
+        stackable = false,
+        flags = { "hidden", "only-in-cursor" },
+        selection_mode = { "any-entity", },
+        entity_filters = { }, -- filled in data-final-fixes with all big factory entities
+        selection_cursor_box_type = "entity",
+        selection_color = { r = 0, g = 1, b = 0 },
+        alt_selection_mode = { "any-entity", },
+        alt_entity_filters = { "bf-loader" },
+        alt_selection_cursor_box_type = "entity",
+        alt_selection_color = { r = 1, g = 0, b = 0 },
+    },
 })
 
 if (settings.startup["bf-craftable"].value) then

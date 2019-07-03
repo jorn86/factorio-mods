@@ -164,19 +164,21 @@ local generateMachine = function(item, entity)
             bigRecipe(item),
         })
     end
-    data:extend({
-        bigEntity(entity)
-    })
+    local big_entity = bigEntity(entity)
+    data:extend({ big_entity })
+    return big_entity.name
 end
 
 return function(factories)
+    local big_factories = {}
     for _, def in pairs(factories) do
         local entity = data.raw[def[1]][def[2]]
         local item = data.raw.item[def[2]]
         if (type(entity) ~= "table") or (type(item) ~= "table") then
             print("Missing item: " .. def[1] .. "." .. def[2])
         else
-            generateMachine(item, entity)
+            table.insert(big_factories, generateMachine(item, entity))
         end
     end
+    return big_factories
 end

@@ -1,4 +1,11 @@
 ---------------------------------------------------------------------------------------------------
+Version: 0.0.5
+Date: 03.07.2019
+  Features:
+    - Added setting to disable generating loaders
+    - Added tool to manage loaders for existing big factories. Normal mode resets and regenerates all loaders, alt mode (shift) removes selected loaders. Note that loaders can also be removed by picking them up, but the tool is a lot faster for removing multiple loaders.
+    - Added setting to suppress generating loaders on positions with fluid boxes
+---------------------------------------------------------------------------------------------------
 Version: 0.0.4
 Date: 16.06.2019
   Bugfixes:

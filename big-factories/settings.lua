@@ -4,28 +4,28 @@ data:extend({
         name = "bf-minable",
         default_value = false,
         setting_type = "startup",
-        order = '01'
+        order = "bf-00"
     },
     {
         type = "bool-setting",
         name = "bf-craftable",
         default_value = false,
         setting_type = "startup",
-        order = '02'
+        order = "bf-01"
     },
     {
         type = "bool-setting",
         name = "bf-centrifuge-in-assembler",
         default_value = true,
         setting_type = "startup",
-        order = '03'
+        order = "bf-10"
     },
     {
         type = "bool-setting",
         name = "bf-scale-icon",
         default_value = true,
         setting_type = "startup",
-        order = '04'
+        order = "bf-20"
     },
     {
         type = "int-setting",
@@ -34,7 +34,7 @@ data:extend({
         minimum_value = 1,
         maximum_value = 100,
         setting_type = "startup",
-        order = '10'
+        order = "bf-30"
     },
     {
         type = "int-setting",
@@ -43,7 +43,7 @@ data:extend({
         minimum_value = 1,
         maximum_value = 7,
         setting_type = "startup",
-        order = '11'
+        order = "bf-31"
     },
     {
         type = "int-setting",
@@ -52,14 +52,15 @@ data:extend({
         minimum_value = -1,
         maximum_value = 12,
         setting_type = "startup",
-        order = '12'
+        order = "bf-40"
     },
+
     {
         type = "bool-setting",
         name = "bf-spawn",
         default_value = true,
         setting_type = "runtime-global",
-        order = '00'
+        order = "bf-00"
     },
     {
         type = "double-setting",
@@ -68,6 +69,20 @@ data:extend({
         minimum_value = 0,
         maximum_value = 1,
         setting_type = "runtime-global",
-        order = '01'
+        order = "bf-01"
+    },
+    {
+        type = "bool-setting",
+        name = "bf-loaders",
+        default_value = true,
+        setting_type = "runtime-global",
+        order = "bf-10"
+    },
+    {
+        type = "bool-setting",
+        name = "bf-suppress-loaders",
+        default_value = true,
+        setting_type = "runtime-global",
+        order = "bf-11"
     },
 })
