@@ -1,4 +1,9 @@
 ---------------------------------------------------------------------------------------------------
+Version: 0.0.7
+Date: 07.07.2019
+  Bugfixes:
+    - Fixed that the mod config wasn't initialized properly when loading a save, causing errors when spawning new big factories.
+---------------------------------------------------------------------------------------------------
 Version: 0.0.6
 Date: 07.07.2019
   Changes:

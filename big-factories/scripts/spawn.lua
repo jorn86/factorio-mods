@@ -2,7 +2,7 @@ local findFactories = require("scripts.findFactories")
 require("scripts.utility")
 local spawn = settings.global["bf-spawn"].value
 local spawnChance = settings.global["bf-spawn-chance"].value
-local factories = {}
+local factories
 
 local function chooseNextSpawnType()
     local totalChance = 0
@@ -32,6 +32,9 @@ local function doSpawn(center, surface, entityname)
 end
 
 function trigger_spawn(event)
+    if not factories then
+        factories = findFactories(function() return game.entity_prototypes end)
+    end
     if not spawn or math.random() > spawnChance then
         return
     end
@@ -51,8 +54,4 @@ function trigger_spawn(event)
     end
 
     doSpawn(center, event.surface, nextSpawnType)
-end
-
-function spawn_init()
-    factories = findFactories(function() return game.entity_prototypes end)
 end

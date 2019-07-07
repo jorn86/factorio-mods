@@ -2,7 +2,6 @@ require('scripts.loaders')
 require('scripts.spawn')
 require('scripts.utility')
 
-script.on_init(spawn_init)
 script.on_event(defines.events.on_chunk_generated, trigger_spawn)
 
 script.on_event(defines.events.on_player_mined_entity, entity_mined)
