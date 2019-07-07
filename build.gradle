@@ -17,6 +17,7 @@ subprojects {
         include '**/*.lua'
         include 'graphics/**'
         include 'locale/**'
+        include 'migrations/**'
         archiveFileName.set("${name}.zip")
         destinationDirectory = file('build')
     }

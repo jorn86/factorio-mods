@@ -1,7 +1,7 @@
 require("scripts.utility")
 
 local function removeLoaders(entity)
-    if string.sub(entity.name, 0,3) ~= "bf-" then return end
+    if not entity.valid or string.sub(entity.name, 0,3) ~= "bf-" then return end
     if entity.name == "bf-loader" then return end
 
     local box = entity.prototype.collision_box
@@ -21,7 +21,7 @@ local function createLoader(surface, suppress, position, type, direction, force)
 end
 
 local function generateLoaders(entity)
-    if string.sub(entity.name, 0,3) ~= "bf-" then return end
+    if not entity.valid or string.sub(entity.name, 0,3) ~= "bf-" then return end
 
     local suppress = {}
     if settings.global["bf-suppress-loaders"].value then
@@ -48,13 +48,13 @@ local function generateLoaders(entity)
     end
 end
 
-function entityMined(event)
+function entity_mined(event)
     local entity = event.entity
     if not (entity and entity.valid) then return end
     removeLoaders(entity)
 end
 
-function entityBuilt(event)
+function entity_built(event)
     local entity = event.created_entity or event.entity
     if not (entity and entity.valid) then return end
     if not (settings.global["bf-loaders"].value) then return end

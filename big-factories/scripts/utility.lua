@@ -46,7 +46,6 @@ function findTechThatUnlocks(recipeName)
         end
     end
     print("no recipe found for " .. recipeName)
-    error()
 end
 
 function clearArea(center, surface)

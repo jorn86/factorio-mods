@@ -12,10 +12,8 @@ local printMachines = function()
 end
 --printMachines()
 
-local factories = require("scripts.findFactories")(mods)
 require("prototypes.loader")
-local all_big_entities = require("prototypes.prototypes")(factories)
-data.raw["selection-tool"]["bf-loader-tool"].entity_filters = all_big_entities
+require("prototypes.prototypes")
 
 if (settings.startup["bf-centrifuge-in-assembler"].value) then
     local machine = data.raw["assembling-machine"]["bf-assembling-machine-6"] or data.raw["assembling-machine"]["bf-assembling-machine-3"]

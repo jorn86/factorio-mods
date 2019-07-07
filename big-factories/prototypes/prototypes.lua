@@ -1,18 +1,20 @@
 require("util")
 require("scripts.utility")
 local adjustVisuals = require("scripts.adjustVisuals")
+local factories = require("scripts.findFactories")(function(type) return data.raw[type] end)
 
-local sizeFactor = settings.startup["bf-size-factor"].value
-local speedFactor = settings.startup["bf-speed-factor"].value
+local size_factor = settings.startup["bf-size-factor"].value
+local speed_factor = settings.startup["bf-speed-factor"].value
 local minable = settings.startup["bf-minable"].value
 local craftable = settings.startup["bf-craftable"].value
-local moduleSlots = settings.startup["bf-module-slots"].value
-local scaleIcon = settings.startup["bf-scale-icon"].value
+local module_slots = settings.startup["bf-module-slots"].value
+local scale_icon = settings.startup["bf-scale-icon"].value
+
 local flags = {"placeable-neutral", "placeable-player", "player-creation"}
 if not minable then table.insert(flags, "not-deconstructable") end
 if not (minable or craftable) then table.insert(flags, "not-blueprintable") end
 
-local bigName = function(itemOrEntity)
+local big_localised_name = function(itemOrEntity)
     if (itemOrEntity.localised_name) then
         return {"", "Big ", itemOrEntity.localised_name}
     else
@@ -20,67 +22,65 @@ local bigName = function(itemOrEntity)
     end
 end
 
-local bigItem = function(item)
-    local bigItem = util.table.deepcopy(item)
-    bigItem.name = "bf-" .. item.name
-    bigItem.localised_name = {"", "Big ", {"entity-name." .. item.name}}
-    bigItem.place_result = bigItem.name
-    bigItem.subgroup = "production-machine"
-    bigItem.order = "z[" .. item.name .. "]"
-    return bigItem
+local big_item = function(def)
+    local item = data.raw["item"][def.name]
+    local big_item = util.table.deepcopy(item)
+    big_item.name = def.big_name
+    big_item.localised_name = big_localised_name(item)
+    big_item.place_result = big_item.name
+    big_item.subgroup = "big-factory"
+    big_item.order = "bf[" .. def.big_name .. "]"
+    return big_item
 end
 
-local bigTechnology = function(item)
-    local originalTech = findTechThatUnlocks(item.name)
-    local bigTech = {
+local big_technology = function(def)
+    local item = data.raw["item"][def.name]
+    local original_tech = findTechThatUnlocks(item.name)
+    if not original_tech then return end
+    local big_tech = {
         type = "technology",
-        name = "bf-" .. item.name,
-        localised_name = bigName(item),
-        icon = originalTech.icon,
-        icon_size = originalTech.icon_size,
+        name = def.big_name,
+        localised_name = big_localised_name(item),
+        icon = original_tech.icon,
+        icon_size = original_tech.icon_size,
         prerequisites = { "bf-construction" },
-        effects = {{ type = "unlock-recipe", recipe = "bf-" .. item.name }},
+        effects = {{ type = "unlock-recipe", recipe = def.big_name }},
         unit = {
             ingredients = {{"automation-science-pack", 1},{"logistic-science-pack", 1},{"chemical-science-pack", 1},{"production-science-pack", 1}},
             count = 500,
             time = 60
         }
     }
-    local number = string.find(bigTech.name, "-%d+$")
-    if number then
-        bigTech.name = string.sub(bigTech.name, 0, number - 1)
+    if (original_tech.enabled ~= false) then
+        table.insert(big_tech.prerequisites, original_tech.name)
     end
-    if (originalTech.enabled ~= false) then
-        table.insert(bigTech.prerequisites, originalTech.name)
-    end
-    return bigTech
+    return big_tech
 end
 
-local bigRecipe = function(item)
-    local name = "bf-" .. item.name
+local big_recipe = function(def)
+    local item = data.raw["item"][def.name]
     return {
         type = "recipe",
-        name = name,
-        localised_name = bigName(item),
-        order = "zbf[" .. name .. "]",
+        name = def.big_name,
+        localised_name = big_localised_name(item),
+        order = "zbf[" .. def.big_name .. "]",
         energy_required = 1,
         enabled = false,
-        ingredients =
-        {
+        ingredients = {
             {type = "item", name = "bf-big-building", amount = 1},
-            {type = "item", name = item.name, amount = 40},
+            {type = "item", name = item.name, amount = speed_factor},
         },
-        result = name,
+        result = def.big_name,
     }
 end
 
-local increaseEnergyUsage = function(energy)
+local increase_energy_usage = function(energy)
     local amount = tonumber(string.sub(energy, 0,-3))
     local unit = string.sub(energy, -2)
-    return tostring(amount * speedFactor) .. unit
+    return tostring(amount * speed_factor) .. unit
 end
 
-local updatePipeConnections = function(position, offset, oldCollision)
+local update_pipe_connections = function(position, offset, oldCollision)
     if (math.abs(position[1]) > math.abs(position[2])) then
         if (position[1] < 0) then position[1] = position[1] - offset else position[1] = position[1] + offset end
         position[2] = position[2] + ((position[2] / oldCollision) * offset)
@@ -90,7 +90,7 @@ local updatePipeConnections = function(position, offset, oldCollision)
     end
     if position[1] < 0 then position[1] = math.ceil(position[1]) else position[1] = math.floor(position[1]) end
     if position[2] < 0 then position[2] = math.ceil(position[2]) else position[2] = math.floor(position[2]) end
-    if (sizeFactor % 2 == 0) then
+    if (size_factor % 2 == 0) then
         if (math.abs(position[1]) < math.abs(position[2])) then
             if position[1] > 0 then position[1] = position[1] + 0.5 else position[1] = position[1] - 0.5 end
         else
@@ -99,13 +99,13 @@ local updatePipeConnections = function(position, offset, oldCollision)
     end
 end
 
-local scaleSize = function(entity)
+local scale_size = function(entity)
     local oldSize = baseValue(entity.selection_box)
     local oldCollision = baseValue(entity.collision_box)
     if (oldSize < oldCollision) then error("for " .. entity.name .. " size base value " .. oldSize " is smaller than collision base value " .. oldCollision) end
 
     local collisionOffset = oldSize - oldCollision
-    local newSize = oldSize * sizeFactor
+    local newSize = oldSize * size_factor
     local newCollision = newSize - collisionOffset
     entity.collision_box = {{ -newCollision, -newCollision }, {newCollision, newCollision}}
     entity.selection_box = {{ -newSize, -newSize}, {newSize, newSize}}
@@ -118,67 +118,49 @@ local scaleSize = function(entity)
                     box.base_area = box.base_area * 10
                 end
                 for _, c in pairs(box.pipe_connections) do
-                    updatePipeConnections(c.position, offset, oldCollision)
+                    update_pipe_connections(c.position, offset, oldCollision)
                 end
             end
         end
     end
-    adjustVisuals(entity, sizeFactor, 1 / speedFactor)
+    adjustVisuals(entity, size_factor, 1 / speed_factor)
 end
 
-local bigEntity = function(entity)
-    local bigEntity = util.table.deepcopy(entity)
-    bigEntity.name = "bf-" .. entity.name
-    bigEntity.localised_name = bigName(entity)
-    if bigEntity.crafting_speed then bigEntity.crafting_speed = entity.crafting_speed * speedFactor end
-    if bigEntity.researching_speed then bigEntity.researching_speed = entity.researching_speed * speedFactor end
-    bigEntity.max_health = entity.max_health * sizeFactor
-    bigEntity.energy_usage = increaseEnergyUsage(entity.energy_usage)
-    bigEntity.fast_replaceable_group = nil
-    bigEntity.next_upgrade = nil
-    if moduleSlots >= 0 then bigEntity.module_specification.module_slots = moduleSlots end
-    bigEntity.flags = flags
-    bigEntity.create_ghost_on_death = minable or craftable
-    bigEntity.scale_entity_info_icon = scaleIcon
-    bigEntity.order = "zzz"
-    scaleSize(bigEntity)
+local big_entity = function(def)
+    local entity = data.raw[def.type][def.name]
+    local big_entity = util.table.deepcopy(entity)
+    big_entity.name = def.big_name
+    big_entity.localised_name = big_localised_name(entity)
+    if entity.crafting_speed then big_entity.crafting_speed = entity.crafting_speed * speed_factor end
+    if entity.researching_speed then big_entity.researching_speed = entity.researching_speed * speed_factor end
+    big_entity.max_health = entity.max_health * size_factor
+    big_entity.energy_usage = increase_energy_usage(entity.energy_usage)
+    big_entity.fast_replaceable_group = nil
+    big_entity.next_upgrade = nil
+    if module_slots >= 0 then big_entity.module_specification.module_slots = module_slots end
+    big_entity.flags = flags
+    big_entity.create_ghost_on_death = minable or craftable
+    big_entity.scale_entity_info_icon = scale_icon
+    big_entity.order = "bf[" .. def.big_name .. "]"
+    scale_size(big_entity)
 
     if minable then
-        bigEntity.minable = { mining_time = 2, result = bigEntity.name }
+        big_entity.minable = { mining_time = 2, result = def.big_name }
     else
-        bigEntity.minable = nil
+        big_entity.minable = nil
     end
 
-    return bigEntity
+    table.insert(data.raw["selection-tool"]["bf-loader-tool"].entity_filters, def.big_name)
+    return big_entity
 end
 
-local generateMachine = function(item, entity)
-    if craftable or minable then
-        data:extend({
-            bigItem(item)
-        })
-    end
+local generate_machine = function(def)
+    data:extend({ big_item(def), big_entity(def), })
     if craftable then
-        data:extend({
-            bigTechnology(item),
-            bigRecipe(item),
-        })
+        data:extend({ big_technology(def), big_recipe(def), })
     end
-    local big_entity = bigEntity(entity)
-    data:extend({ big_entity })
-    return big_entity.name
 end
 
-return function(factories)
-    local big_factories = {}
-    for _, def in pairs(factories) do
-        local entity = data.raw[def[1]][def[2]]
-        local item = data.raw.item[def[2]]
-        if (type(entity) ~= "table") or (type(item) ~= "table") then
-            print("Missing item: " .. def[1] .. "." .. def[2])
-        else
-            table.insert(big_factories, generateMachine(item, entity))
-        end
-    end
-    return big_factories
+for _, def in pairs(factories) do
+    generate_machine(def)
 end

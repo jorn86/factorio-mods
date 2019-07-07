@@ -1,101 +1,88 @@
-return function(mods)
+return function(data)
     local factories = {}
 
-    if (mods["bobassembly"]) then
-        table.insert(factories, {"assembling-machine", "assembling-machine-6", 1})
-        table.insert(factories, {"assembling-machine", "chemical-plant-4", 0.2})
-        table.insert(factories, {"assembling-machine", "electronics-machine-3", 0.1})
-        table.insert(factories, {"assembling-machine", "oil-refinery-4", 0.04})
-        if (mods["bobplates"]) then
-            table.insert(factories, {"assembling-machine", "bob-distillery-5", 0.01})
-            table.insert(factories, {"assembling-machine", "electrolyser-4", 0.2})
-            table.insert(factories, {"assembling-machine", "electric-chemical-mixing-furnace-2", 0.8})
-        else
-            table.insert(factories, {"furnace", "electric-furnace", 0.8})
+    local function add(type, name, chance)
+        local function insert(full_name)
+            print('using ' .. full_name .. ' for bf-' .. name)
+            table.insert(factories, {
+                type = type,
+                base_name = name,
+                name = full_name,
+                big_name = "bf-" .. name,
+                chance = chance,
+            })
         end
-    else
-        table.insert(factories, {"assembling-machine", "assembling-machine-3", 1})
-        table.insert(factories, {"assembling-machine", "oil-refinery", 0.04})
-        table.insert(factories, {"assembling-machine", "chemical-plant", 0.2})
-        --table.insert(factories, {"assembling-machine", "centrifuge", 0.01})
-        table.insert(factories, {"furnace", "electric-furnace", 0.8})
-        if (mods["bobplates"]) then
-            table.insert(factories, {"assembling-machine", "bob-distillery", 0.01})
-            table.insert(factories, {"assembling-machine", "chemical-furnace", 0.2}) -- not called electric, apparently
-            table.insert(factories, {"assembling-machine", "electrolyser", 0.2})
-            table.insert(factories, {"assembling-machine", "electric-mixing-furnace", 0.2})
+
+        local prototypes = data(type)
+        for i = 9,0,-1 do
+            if prototypes[name .. "-" .. i] then
+                return insert(name .. "-" .. i)
+            end
         end
+        if prototypes[name] then
+            return insert(name)
+        end
+        --print(name .. ' not found')
     end
 
-    if (mods["bobtech"]) then
-        table.insert(factories, {"lab", "lab-2", 0.02})
-    else
-        table.insert(factories, {"lab", "lab", 0.02})
-    end
-    if (mods["bobmodules"]) then
-        table.insert(factories, {"lab", "lab-module", 0.01})
-    end
+    add("assembling-machine", "assembling-machine", 1)
+    add("assembling-machine", "chemical-plant", 0.2)
+    add("furnace", "electric-furnace", 0.8)
+    add("assembling-machine", "oil-refinery", 0.04)
+    --add("assembling-machine", "centrifuge", 0.01)
+    add("assembling-machine", "electronics-machine", 0.1)
+    add("assembling-machine", "bob-distillery", 0.01)
+    add("assembling-machine", "electrolyser", 0.2)
+    add("assembling-machine", "chemical-furnace", 0.2) -- not called electric, apparently
+    add("assembling-machine", "electric-mixing-furnace", 0.2)
+    add("assembling-machine", "electric-chemical-mixing-furnace", 0.8)
+    add("lab", "lab", 0.02)
+    add("lab", "lab-module", 0.01)
+    add("assembling-machine", "bob-greenhouse", 0.04)
+    add("assembling-machine", "ore-crusher", 0.2)
+    add("assembling-machine", "ore-sorting-facility", 0.1)
+    add("assembling-machine", "ore-floatation-cell", 0.05)
+    add("assembling-machine", "ore-leaching-plant", 0.02)
+    add("assembling-machine", "ore-refinery", 0.01)
+    add("assembling-machine", "ore-powderizer", 0.01)
+    add("assembling-machine", "filtration-unit", 0.05)
+    add("assembling-machine", "crystallizer", 0.05)
+    add("assembling-machine", "liquifier", 0.05)
+    add("assembling-machine", "hydro-plant", 0.05)
+    add("assembling-machine", "advanced-chemical-plant", 0.05)
+    add("assembling-machine", "angels-air-filter", 0.05)
+    add("assembling-machine", "angels-chemical-plant", 0.05)
+    add("assembling-machine", "angels-electrolyser", 0.05)
+    add("assembling-machine", "gas-refinery", 0.05)
+    add("assembling-machine", "salination-plant", 0.02)
+    add("assembling-machine", "steam-cracker", 0.05)
+    add("assembling-machine", "blast-furnace", 0.1)
+    add("assembling-machine", "casting-machine", 0.1)
+    add("assembling-machine", "angels-chemical-furnace", 0.1)
+    add("assembling-machine", "induction-furnace", 0.1)
+    add("assembling-machine", "ore-processing-machine", 0.1)
+    add("assembling-machine", "pellet-press", 0.1)
+    add("assembling-machine", "powder-mixer", 0.1)
+    add("assembling-machine", "strand-casting-machine", 0.1)
+    add("assembling-machine", "sintering-oven", 0.02)
+    add("assembling-machine", "algae-farm", 0.1)
+    --add("assembling-machine", "bio-arboretum", 0.05)
+    add("furnace", "bio-butchery", 0.01)
+    add("furnace", "bio-hatchery", 0.01)
+    add("assembling-machine", "bio-press", 0.05)
+    add("assembling-machine", "bio-processor", 0.05)
+    add("furnace", "composter", 0.05)
+    add("assembling-machine", "nutrient-extractor", 0.05)
+    add("assembling-machine", "bio-refugium-biter", 0)
+    add("assembling-machine", "bio-refugium-fish", 0)
+    add("assembling-machine", "bio-refugium-hogger", 0)
+    add("assembling-machine", "bio-refugium-puffer", 0)
+    add("assembling-machine", "crop-farm", 0.01)
+    add("assembling-machine", "desert-farm", 0.01)
+    add("assembling-machine", "swamp-farm", 0.01)
+    add("assembling-machine", "temperate-farm", 0.01)
 
-    if (mods["bobgreenhouse"]) then
-        table.insert(factories, {"assembling-machine", "bob-greenhouse", 0.04})
-    end
-
-    if (mods["angelsrefining"]) then
-        table.insert(factories, {"assembling-machine", "ore-crusher-3", 0.2})
-        table.insert(factories, {"assembling-machine", "ore-sorting-facility-4", 0.1})
-        table.insert(factories, {"assembling-machine", "ore-floatation-cell-3", 0.05})
-        table.insert(factories, {"assembling-machine", "ore-leaching-plant-3", 0.02})
-        table.insert(factories, {"assembling-machine", "ore-refinery-2", 0.01})
-        table.insert(factories, {"assembling-machine", "ore-powderizer-3", 0.01})
-
-        table.insert(factories, {"assembling-machine", "filtration-unit-2", 0.05})
-        table.insert(factories, {"assembling-machine", "crystallizer-2", 0.05})
-        table.insert(factories, {"assembling-machine", "liquifier-2", 0.05})
-        table.insert(factories, {"assembling-machine", "hydro-plant-3", 0.05})
-    end
-
-    if (mods["angelspetrochem"]) then
-        table.insert(factories, {"assembling-machine", "advanced-chemical-plant-2", 0.05})
-        table.insert(factories, {"assembling-machine", "angels-air-filter-2", 0.05})
-        table.insert(factories, {"assembling-machine", "angels-chemical-plant-4", 0.05})
-        table.insert(factories, {"assembling-machine", "angels-electrolyser-4", 0.05})
-        table.insert(factories, {"assembling-machine", "gas-refinery-3", 0.05}) -- because the gas-refinery-4 recipe won"t be found for some reason
-        table.insert(factories, {"assembling-machine", "salination-plant-2", 0.02})
-        table.insert(factories, {"assembling-machine", "steam-cracker-4", 0.05})
-    end
-
-    if (mods["angelssmelting"]) then
-        table.insert(factories, {"assembling-machine", "blast-furnace-4", 0.1})
-        table.insert(factories, {"assembling-machine", "casting-machine-4", 0.1})
-        table.insert(factories, {"assembling-machine", "angels-chemical-furnace-4", 0.1})
-        table.insert(factories, {"assembling-machine", "induction-furnace-4", 0.1})
-        table.insert(factories, {"assembling-machine", "ore-processing-machine-4", 0.1})
-        table.insert(factories, {"assembling-machine", "pellet-press-4", 0.1})
-        table.insert(factories, {"assembling-machine", "powder-mixer-4", 0.1})
-        table.insert(factories, {"assembling-machine", "strand-casting-machine-4", 0.1})
-        table.insert(factories, {"assembling-machine", "sintering-oven-4", 0.02})
-    end
-
-    if (mods["angelsbioprocessing"]) then
-        table.insert(factories, {"assembling-machine", "algae-farm-3", 0.1})
-        --table.insert(factories, {"assembling-machine", "bio-arboretum-1", 0.05})
-        table.insert(factories, {"furnace", "bio-butchery", 0.01})
-        table.insert(factories, {"furnace", "bio-hatchery", 0.01})
-        table.insert(factories, {"assembling-machine", "bio-press", 0.05})
-        table.insert(factories, {"assembling-machine", "bio-processor", 0.05})
-        table.insert(factories, {"furnace", "composter", 0.05})
-        table.insert(factories, {"assembling-machine", "nutrient-extractor", 0.05})
-
-        table.insert(factories, {"assembling-machine", "bio-refugium-biter", 0})
-        table.insert(factories, {"assembling-machine", "bio-refugium-fish", 0})
-        --table.insert(factories, {"assembling-machine", "bio-refugium-hogger", 0})
-        table.insert(factories, {"assembling-machine", "bio-refugium-puffer", 0})
-
-        table.insert(factories, {"assembling-machine", "crop-farm", 0.01})
-        table.insert(factories, {"assembling-machine", "desert-farm", 0.01})
-        table.insert(factories, {"assembling-machine", "swamp-farm", 0.01})
-        table.insert(factories, {"assembling-machine", "temperate-farm", 0.01})
-    end
-
+    log('big factory definitions:')
+    log(serpent.block(factories))
     return factories
 end

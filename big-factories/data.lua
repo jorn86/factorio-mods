@@ -4,12 +4,18 @@ data:extend({
         name = "big-factory"
     },
     {
+        type = "item-subgroup",
+        name = "big-factory",
+        group = "production",
+        order = "z-bf"
+    },
+    {
         type = "item",
         name = "bf-big-building",
         icon = "__big-factories__/graphics/icons/big-building.png",
         icon_size = 32,
         subgroup = "intermediate-product",
-        order = "z-d[ftl-research-satellite]",
+        order = "zz-bf[big-building]",
         stack_size = 1,
     },
     {
@@ -39,7 +45,7 @@ data:extend({
         icon = "__base__/graphics/icons/loader.png",
         icon_size = 32,
         subgroup = "other",
-        order = "bf-zzz",
+        order = "bf-loader-tool",
         stack_size = 1,
         stackable = false,
         flags = { "hidden", "only-in-cursor" },

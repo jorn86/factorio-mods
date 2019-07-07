@@ -1,15 +1,23 @@
 ---------------------------------------------------------------------------------------------------
+Version: 0.0.6
+Date: 07.07.2019
+  Changes:
+    - Changed the internal names of big factory entities, items, recipes and technologies. If big factories have gone missing after this update, *don't save your game* and make a thread on the mod portal.
+    - The big factories will now be automatically based on the best/fastest base entity of its type, taking mod settings into account. For example, it will use the Assembling Machine 3 from vanilla, but the Assembling Machine 6 from Bob's instead if you have it installed. Changing active mods should automatically use the new base entity for all existing big factories.
+    - Moved the big factory recipes (if enabled in mod settings) to their own subgroup in the production crafting tab.
+    - The amount of original buildings needed for Big factory recipes is now equal to the speed modifier setting, instead of hardcoded 40.
+---------------------------------------------------------------------------------------------------
 Version: 0.0.5
 Date: 03.07.2019
   Features:
-    - Added setting to disable generating loaders
+    - Added setting to disable generating loaders.
     - Added tool to manage loaders for existing big factories. Normal mode resets and regenerates all loaders, alt mode (shift) removes selected loaders. Note that loaders can also be removed by picking them up, but the tool is a lot faster for removing multiple loaders.
-    - Added setting to suppress generating loaders on positions with fluid boxes
+    - Added setting to suppress generating loaders on positions with fluid boxes.
 ---------------------------------------------------------------------------------------------------
 Version: 0.0.4
 Date: 30.06.2019
   Bugfixes:
-    - Fixed that the mod sometimes sent a `script_raised_built` event with `nil` entity, causing crashes when used with other mods that received the event
+    - Fixed that the mod sometimes sent a `script_raised_built` event with `nil` entity, causing crashes when used with other mods that received the event.
 ---------------------------------------------------------------------------------------------------
 Version: 0.0.3
 Date: 16.06.2019
@@ -21,12 +29,12 @@ Version: 0.0.2
 Date: 09.06.2019
   Changes:
     - Generated loaders are now always input. You can manually rotate them and choose where you want the output. Loaders can be filtered, for when you have recipes with multiple solid outputs.
-    - Added energy required (build time) to big building recipe
-    - Tweaked some spawn ratios: Angel's smelting buildings will spawn twice as often
+    - Added energy required (build time) to big building recipe.
+    - Tweaked some spawn ratios: Angel's smelting buildings will spawn twice as often.
 ---------------------------------------------------------------------------------------------------
 Version: 0.0.1
 Date: 08.06.2019
   Features:
     - Initial release. Adds big versions of most crafting machines.
-    - Optional support for most of Bob's and Angel's mods
-    - Configurable speed and size factors
+    - Optional support for most of Bob's and Angel's mods.
+    - Configurable speed and size factors.
