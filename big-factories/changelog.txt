@@ -1,4 +1,9 @@
 ---------------------------------------------------------------------------------------------------
+Version: 0.0.8
+Date: 07.07.2019
+  Changes:
+    - Resolved some issues with fluid connections. If you still have issues, make a thread on the mod portal and upload your save game, so I can investigate which mod setting combinations still give issues.
+---------------------------------------------------------------------------------------------------
 Version: 0.0.7
 Date: 07.07.2019
   Bugfixes:

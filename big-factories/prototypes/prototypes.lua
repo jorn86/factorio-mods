@@ -80,45 +80,41 @@ local increase_energy_usage = function(energy)
     return tostring(amount * speed_factor) .. unit
 end
 
-local update_pipe_connections = function(position, offset, oldCollision)
-    if (math.abs(position[1]) > math.abs(position[2])) then
-        if (position[1] < 0) then position[1] = position[1] - offset else position[1] = position[1] + offset end
-        position[2] = position[2] + ((position[2] / oldCollision) * offset)
-    else
-        position[1] = position[1] + ((position[1] / oldCollision) * offset)
-        if (position[2] < 0) then position[2] = position[2] - offset else position[2] = position[2] + offset end
-    end
-    if position[1] < 0 then position[1] = math.ceil(position[1]) else position[1] = math.floor(position[1]) end
-    if position[2] < 0 then position[2] = math.ceil(position[2]) else position[2] = math.floor(position[2]) end
-    if (size_factor % 2 == 0) then
-        if (math.abs(position[1]) < math.abs(position[2])) then
-            if position[1] > 0 then position[1] = position[1] + 0.5 else position[1] = position[1] - 0.5 end
-        else
-            if position[2] > 0 then position[2] = position[2] + 0.5 else position[2] = position[2] - 0.5 end
-        end
-    end
+local round = function(num, add_before, correct_after, add_after)
+    if num < 0 then return math.ceil(num - add_before) - correct_after - add_after else return math.floor(num + add_before) + correct_after + add_after end
 end
 
 local scale_size = function(entity)
-    local oldSize = baseValue(entity.selection_box)
-    local oldCollision = baseValue(entity.collision_box)
-    if (oldSize < oldCollision) then error("for " .. entity.name .. " size base value " .. oldSize " is smaller than collision base value " .. oldCollision) end
+    local old_size = baseValue(entity.selection_box)
+    local old_collision = baseValue(entity.collision_box)
+    if (old_size < old_collision) then error("for " .. entity.name .. " size base value " .. old_size " is smaller than collision base value " .. old_collision) end
 
-    local collisionOffset = oldSize - oldCollision
-    local newSize = oldSize * size_factor
-    local newCollision = newSize - collisionOffset
-    entity.collision_box = {{ -newCollision, -newCollision }, {newCollision, newCollision}}
-    entity.selection_box = {{ -newSize, -newSize}, {newSize, newSize}}
+    local collisionOffset = old_size - old_collision
+    local new_size = old_size * size_factor
+    local new_collision = new_size - collisionOffset
+
+    entity.collision_box = {{ -new_collision, -new_collision }, { new_collision, new_collision }}
+    entity.selection_box = {{ -new_size, -new_size }, { new_size, new_size }}
 
     if entity.fluid_boxes then
-        local offset = newCollision - oldCollision
+        local offset = new_collision - old_collision
         for _, box in pairs(entity.fluid_boxes) do
             if (type(box) == "table") then
                 if (box.base_area) then
-                    box.base_area = box.base_area * 10
+                    box.base_area = box.base_area * speed_factor
                 end
                 for _, c in pairs(box.pipe_connections) do
-                    update_pipe_connections(c.position, offset, oldCollision)
+                    local inside, outside
+                    if math.abs(c.position[1]) < math.abs(c.position[2])
+                        then inside = 1  outside = 2
+                        else inside = 2  outside = 1
+                    end
+
+                    local add_after
+                    if (size_factor % 2 == 0 and c.position[outside] % 1 == 0) then add_after = 0.5 else add_after = 0 end
+
+                    c.position[inside] = round(c.position[inside] + ((c.position[inside] / old_collision) * offset), 0, c.position[inside] % 1, add_after)
+                    c.position[outside] = round(c.position[outside], offset, c.position[outside] % 1, add_after)
                 end
             end
         end
