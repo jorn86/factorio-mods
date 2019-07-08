@@ -31,7 +31,7 @@ return function(data)
     add("assembling-machine", "oil-refinery", 0.04)
     --add("assembling-machine", "centrifuge", 0.01)
     add("assembling-machine", "electronics-machine", 0.1)
-    add("assembling-machine", "bob-distillery", 0.01)
+    --add("assembling-machine", "bob-distillery", 0.01)
     add("assembling-machine", "electrolyser", 0.2)
     add("assembling-machine", "chemical-furnace", 0.2) -- not called electric, apparently
     add("assembling-machine", "electric-mixing-furnace", 0.2)

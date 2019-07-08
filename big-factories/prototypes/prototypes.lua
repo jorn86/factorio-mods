@@ -1,6 +1,6 @@
 require("util")
 require("scripts.utility")
-local adjustVisuals = require("scripts.adjustVisuals")
+local adjust_visuals = require("scripts.adjustVisuals")
 local factories = require("scripts.findFactories")(function(type) return data.raw[type] end)
 
 local size_factor = settings.startup["bf-size-factor"].value
@@ -89,9 +89,9 @@ local scale_size = function(entity)
     local old_collision = baseValue(entity.collision_box)
     if (old_size < old_collision) then error("for " .. entity.name .. " size base value " .. old_size " is smaller than collision base value " .. old_collision) end
 
-    local collisionOffset = old_size - old_collision
+    local collision_offset = old_size - old_collision
     local new_size = old_size * size_factor
-    local new_collision = new_size - collisionOffset
+    local new_collision = new_size - collision_offset
 
     entity.collision_box = {{ -new_collision, -new_collision }, { new_collision, new_collision }}
     entity.selection_box = {{ -new_size, -new_size }, { new_size, new_size }}
@@ -119,7 +119,7 @@ local scale_size = function(entity)
             end
         end
     end
-    adjustVisuals(entity, size_factor, 1 / speed_factor)
+    adjust_visuals(entity, size_factor, 1 / speed_factor)
 end
 
 local big_entity = function(def)

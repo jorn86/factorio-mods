@@ -1,4 +1,9 @@
 ---------------------------------------------------------------------------------------------------
+Version: 0.0.9
+Date: 08.07.2019
+  Bugfixes:
+    - Removed big version of bob's distillery to resolve issue with fluid connections. It might be re-added later, if I ever get the connection points calculations right.
+---------------------------------------------------------------------------------------------------
 Version: 0.0.8
 Date: 07.07.2019
   Changes:
