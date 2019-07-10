@@ -63,7 +63,7 @@ local function update_stockpile(results, factor, skip_new)
         local result = results[r.name]
         if not skip_new or not result.new then
             local consumption = factor * result.count * global.homeworld.population
-            if consumption < stock[r.name] then
+            if consumption < (stock[r.name] or 0) then
                 stock[r.name] = stock[r.name] - consumption
             else
                 stock[r.name] = 0

@@ -1,6 +1,8 @@
 ---------------------------------------------------------------------------------------------------
 Version: 0.0.2
 Date: 10.07.2019
+  Bugfixes:
+    - Fixed crash if no resources were delivered during the first day
   Changes:
     - Removed optional dependency on bob's greenhouse
 ---------------------------------------------------------------------------------------------------
