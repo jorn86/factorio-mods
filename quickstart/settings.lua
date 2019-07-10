@@ -119,3 +119,13 @@ if mods["Raven"] then
         mod("raven", "raven-1", "item"),
     })
 end
+
+if mods["homeworld-reloaded"] then
+    data:extend({
+        mod("hw", "hw-farm", "entity"),
+        mod("hw", "hw-fishery", "entity"),
+        mod("hw", "hw-brewery", "entity"),
+        mod("hw", "hw-sawmill", "entity"),
+        mod("hw", "hw-portal", "entity"),
+    })
+end

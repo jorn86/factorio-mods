@@ -15,7 +15,7 @@ end
 
 local eventHandler = function(event)
     local p = game.get_player(event.player_index)
-    if (settings.global["quickstart-clear"].value) then
+    if settings.global["quickstart-clear"].value then
         p.get_inventory(defines.inventory.character_main).clear()
         p.get_inventory(defines.inventory.character_guns).clear()
         p.get_inventory(defines.inventory.character_ammo).clear()
@@ -84,6 +84,13 @@ local eventHandler = function(event)
     end
     if (game.active_mods["Raven"]) then
         insertModded(p, "raven", "raven-1")
+    end
+    if (game.active_mods["homeworld-reloaded"]) then
+        insertModded(p, "hw", "hw-farm")
+        insertModded(p, "hw", "hw-fishery")
+        insertModded(p, "hw", "hw-brewery")
+        insertModded(p, "hw", "hw-sawmill")
+        insertModded(p, "hw", "hw-portal")
     end
 end
 
