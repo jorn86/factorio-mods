@@ -1,7 +1,9 @@
 local findFactories = require("scripts.findFactories")
 require("scripts.utility")
+
 local spawn = settings.global["bf-spawn"].value
-local spawnChance = settings.global["bf-spawn-chance"].value
+local spawn_chance = settings.global["bf-spawn-chance"].value
+local spawn_indestructible = settings.global["bf-indestructible"].value
 local factories
 
 local function chooseNextSpawnType()
@@ -24,6 +26,7 @@ local function doSpawn(center, surface, entityname)
     if surface.can_place_entity{name=entityname, position=center, force=force, build_check_type=defines.build_check_type.ghost_place, forced=true} and clearArea(center, surface) then
         local entity = surface.create_entity{name=entityname, position=center, force=force, raise_built=true}
         if (entity) then
+            if spawn_indestructible then entity.destructible = false end
             script.raise_event(defines.events.script_raised_built, {entity=entity, created_entity=entity})
             return true
         end
@@ -35,7 +38,7 @@ function trigger_spawn(event)
     if not factories then
         factories = findFactories(function() return game.entity_prototypes end)
     end
-    if not spawn or math.random() > spawnChance then
+    if not spawn or math.random() > spawn_chance then
         return
     end
 

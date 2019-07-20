@@ -1,6 +1,6 @@
-require('scripts.loaders')
-require('scripts.spawn')
-require('scripts.utility')
+require("scripts.loaders")
+require("scripts.spawn")
+require("scripts.utility")
 
 script.on_event(defines.events.on_chunk_generated, trigger_spawn)
 

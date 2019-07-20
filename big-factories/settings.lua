@@ -73,6 +73,13 @@ data:extend({
     },
     {
         type = "bool-setting",
+        name = "bf-indestructible",
+        default_value = true,
+        setting_type = "runtime-global",
+        order = "bf-02"
+    },
+    {
+        type = "bool-setting",
         name = "bf-loaders",
         default_value = true,
         setting_type = "runtime-global",

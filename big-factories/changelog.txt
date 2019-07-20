@@ -1,4 +1,9 @@
 ---------------------------------------------------------------------------------------------------
+Version: 0.0.10
+Date: 20.07.2019
+  Features:
+    - Made spawned factories indestructible, to prevent biters from destroying them before you even see them. There's a setting to disable this option, for if you don't have the mining setting enabled, are playing without biters, and want to be able to remove spawned factories. This feature will only apply to newly spawned factories, not to factories that were spawned before this update. Loaders might still get damaged or destroyed, but you can regenerate them using the loader tool in the shortcut bar.
+---------------------------------------------------------------------------------------------------
 Version: 0.0.9
 Date: 08.07.2019
   Bugfixes:

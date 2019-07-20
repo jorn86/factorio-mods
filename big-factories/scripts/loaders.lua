@@ -62,14 +62,18 @@ function entity_built(event)
 end
 
 function regenerate(event)
-    for _,entity in pairs(event.entities) do
-        removeLoaders(entity)
-        generateLoaders(entity)
+    if event.item == "bf-loader-tool" then
+        for _, entity in pairs(event.entities) do
+            removeLoaders(entity)
+            generateLoaders(entity)
+        end
     end
 end
 
 function remove(event)
-    for _,loader in pairs(event.entities) do
-        loader.destroy()
+    if event.item == "bf-loader-tool" then
+        for _, loader in pairs(event.entities) do
+            loader.destroy()
+        end
     end
 end
