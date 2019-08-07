@@ -1,4 +1,9 @@
 ---------------------------------------------------------------------------------------------------
+Version: 0.0.11
+Date: 07.08.2019
+  Bugfixes:
+    - Fixed that centrifuge recipes are added to the normal assembler, if the setting is enabled
+---------------------------------------------------------------------------------------------------
 Version: 0.0.10
 Date: 20.07.2019
   Features:

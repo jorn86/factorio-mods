@@ -16,6 +16,6 @@ require("prototypes.loader")
 require("prototypes.prototypes")
 
 if (settings.startup["bf-centrifuge-in-assembler"].value) then
-    local machine = data.raw["assembling-machine"]["bf-assembling-machine-6"] or data.raw["assembling-machine"]["bf-assembling-machine-3"]
+    local machine = data.raw["assembling-machine"]["bf-assembling-machine"]
     if machine then table.insert(machine.crafting_categories, "centrifuging") end
 end
