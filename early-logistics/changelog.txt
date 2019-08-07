@@ -1,4 +1,9 @@
 ---------------------------------------------------------------------------------------------------
+Version: 0.0.2
+Date: 28.07.2019
+  Changes:
+    - Now also replaces the dependency on the tech that unlocks utility science pack, with the one that unlocks chemical science pack
+---------------------------------------------------------------------------------------------------
 Version: 0.0.1
 Date: 08.06.2019
   Features:
