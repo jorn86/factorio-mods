@@ -1,4 +1,4 @@
-require('scripts.utility')
+require("scripts.utility")
 
 local richness = {
     ["concrete"] = -1.00,
@@ -42,26 +42,8 @@ local function calculate_richness(entity, area)
     return math.floor(total_richness)
 end
 
-local function update_richness(farm)
-    fill_beacon(find_beacon(farm), calculate_richness(farm, 4))
-end
-
 return {
-    on_built = function(entity)
-        if entity.name == "hw-farm" then
-            create_beacon(entity.surface, entity.position)
-            update_richness(entity)
-        end
-    end,
-
-    on_destroy = function(entity)
-        if entity.name == "hw-farm" then
-            local beacon = find_beacon(entity)
-            if beacon and beacon.valid then beacon.destroy() end
-        end
-    end,
-
-    update = function()
-        for_all_entities("hw-farm", update_richness)
+    update = function (farm, beacon)
+        fill_beacon(beacon, calculate_richness(farm, 4))
     end
 }

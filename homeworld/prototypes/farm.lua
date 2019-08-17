@@ -25,6 +25,7 @@ data:extend({
         crafting_speed = 1,
         crafting_categories = { "hw-farm" },
         allowed_effects = {"speed"},
+        match_animation_speed_to_activity = true, -- this doesn't actually seem to do anything
         animation = {
             frame_count = 5,
             animation_speed = 1/360,

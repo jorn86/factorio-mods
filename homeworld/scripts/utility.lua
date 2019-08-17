@@ -5,24 +5,6 @@ function find(array, element, picker)
     return nil
 end
 
-function create_beacon(surface, position)
-    local beacon = surface.create_entity{name="hw-beacon", position=position, force="player"}
-    if beacon and beacon.valid then
-        beacon.destructible = false
-    else
-        print("failed to create beacon at " .. serpent.line(position))
-    end
-end
-
-function find_beacon(entity)
-    local beacon = entity.surface.find_entities_filtered{name = "hw-beacon", area = areaWithOffset(entity.position, 1)}[1]
-    if beacon and beacon.valid then
-        return beacon
-    else
-        print("failed to find beacon at " .. serpent.line(entity.position))
-    end
-end
-
 function fill_beacon(beacon, fertility)
     if not (beacon and beacon.valid) then return end
     local pollution = beacon.surface.get_pollution(beacon.position)

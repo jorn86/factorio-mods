@@ -1,5 +1,5 @@
 require("scripts.utility")
-local settings = require('scripts.tier_config')
+local settings = require("scripts.tier_config")
 
 local function toPlayer(player, message, forced)
     if forced or player.mod_settings["hw-print"].value then
@@ -16,7 +16,7 @@ end
 local function printTierDetails(player, tier, forced)
     toPlayer(player, {"homeworld-reloaded.tier", tier}, forced)
     for _,r in pairs(settings[tier].requirements) do
-        toPlayer(player,{"", tostring(r.count) .. ' [img=item/' .. r.name .. ']'}, forced)
+        toPlayer(player,{"", tostring(r.count) .. " [img=item/" .. r.name .. "]"}, forced)
     end
 end
 
@@ -138,7 +138,7 @@ local function with_portal_for_rewards(consumer)
         best.setbar(bar)
         return not lost
     else
-        print('no portals with empty slots found at all')
+        print("no portals with empty slots found at all")
     end
 
     return false
@@ -233,12 +233,21 @@ local function on_next_day()
     check_tier_update(can_increase)
 end
 
-return {
-    update = function()
-        for_all_entities("hw-portal", update_portal)
-    end,
+local function spawn(position)
+    local surface = game.get_surface(1)
+    if surface.can_place_entity{name="hw-portal", position=position, force="player", build_check_type=defines.build_check_type.ghost_place} then
+        local entity = surface.create_entity{name="hw-portal", position=position, force="player"}
+        if entity ~= nil then
+            table.insert(global["hw-portal"], entity)
+            return true
+        end
+    end
+    return false
+end
 
-    on_new_player = function(player)
+return {
+    on_new_player = function(event)
+        local player = game.get_player(event.player_index)
         toPlayer(player, {"homeworld-reloaded.welcome"}, true)
         toPlayer(player, {"homeworld-reloaded.command"}, true)
     end,
@@ -250,6 +259,7 @@ return {
     end,
 
     next_day = on_next_day,
+    update_portal = update_portal,
 
     command = function(event)
         if event.name == "hw" or event.name == "homeworld" then
@@ -270,5 +280,12 @@ return {
                 printTierDetails(player, global.homeworld.tier, true)
             end
         end
+    end,
+
+    spawn = function()
+        if spawn({ -5, -5}) then return end
+        if spawn({ -5,  5}) then return end
+        if spawn({  5,  5}) then return end
+        if spawn({  5, -5}) then return end
     end
 }
