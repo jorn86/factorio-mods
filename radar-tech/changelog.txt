@@ -1,4 +1,9 @@
 ---------------------------------------------------------------------------------------------------
+Version: 0.0.2
+Date: 17.08.2019
+  Features:
+    - Added compatibility with some mods that add radars. Compatible mods have been added as optional dependency. Normal radars from those mods will still be replaced by upgraded radars, but special ones will be left alone.
+---------------------------------------------------------------------------------------------------
 Version: 0.0.1
 Date: 11.07.2019
   Features:

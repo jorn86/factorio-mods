@@ -1,3 +1,16 @@
+local blacklist = {
+    "path-scan", "tile-scan", "unit-scan", "unitdata-scan", "zone-scan", -- aai programmable structures
+    "big_brother-surveillance-center", "big_brother-surveillance-small", -- big brother
+    "creative-mod_super-radar", "creative-mod_super-radar-2", -- creative mod
+    "scanning-radar", "scanning-radar-powerdump", -- scanning radar
+}
+local function blacklisted(name)
+    for _,n in pairs(blacklist) do
+        if name == n then return true end
+    end
+    return false
+end
+
 local function get_current_name()
     if not game.forces["player"].technologies["rt-upgrade-tech-1"].researched then
         return "radar"
@@ -18,9 +31,9 @@ local function get_current_name()
     end
 end
 
-local function upgrade(e, name)
-    if e.surface.create_entity{name = name, position = e.position, force = e.force } then
-        e.destroy()
+local function upgrade(from_entity, to_name)
+    if not blacklisted(from_entity.name) and from_entity.surface.create_entity{ name = to_name, position = from_entity.position, force = from_entity.force } then
+        from_entity.destroy()
     end
 end
 
@@ -47,3 +60,15 @@ script.on_event(defines.events.on_built_entity, on_built)
 script.on_event(defines.events.on_robot_built_entity, on_built)
 script.on_event(defines.events.on_research_finished, on_research)
 script.on_event(defines.events.on_technology_effects_reset, on_research)
+
+commands.add_command("resetradars", { "rt-radar.command" }, function(event)
+    local name = get_current_name()
+    for _, surface in pairs(game.surfaces) do
+        for _, radar in pairs(surface.find_entities_filtered { name = name }) do
+            if radar.surface.create_entity { name = "radar", position = radar.position, force = radar.force } then
+                radar.destroy()
+            end
+        end
+    end
+    game.players[event.player_index].print({ "rt-radar.removed" })
+end)
