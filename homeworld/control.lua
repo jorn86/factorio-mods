@@ -4,8 +4,8 @@ local fishery = require("scripts.fishery")
 local portal = require("scripts.homeworld")
 require("scripts.updater")
 
+local portal_updater = register_updater("hw-portal", portal.update_portal);
 local updaters = {
-    register_updater("hw-portal", portal.update_portal),
     register_updater("hw-requirements-combinator", combinator.update_requirements_combinator),
     register_updater("hw-status-combinator", combinator.update_status_combinator),
     register_updater("hw-stockpile-combinator", combinator.update_stockpile_combinator),
@@ -49,12 +49,13 @@ local function on_update_portal(event)
     if event.tick == 0 then
         portal.first_day()
     else
-        for _,u in pairs(updaters) do
-            u.update_all()
-        end
+        portal_updater.update_all()
         if event.tick % 25000 == 0 then
             portal.next_day()
         end
+    end
+    for _,u in pairs(updaters) do
+        u.update_all()
     end
 end
 

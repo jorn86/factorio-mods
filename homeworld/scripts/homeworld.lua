@@ -8,15 +8,29 @@ local function toPlayer(player, message, forced)
 end
 
 local function toAllPlayers(message, forced)
-    for _,player in pairs(game.players) do
+    for _, player in pairs(game.players) do
         toPlayer(player, message, forced)
     end
 end
 
+local function check_achievements()
+    for _, player in pairs(game.players) do
+        if global.homeworld.population >= 25000 then
+            player.unlock_achievement("hw-25k")
+        end
+        if global.homeworld.population >= 100000 then
+            player.unlock_achievement("hw-100k")
+        end
+        if global.homeworld.population >= 500000 then
+            player.unlock_achievement("hw-500k")
+        end
+    end
+end
+
 local function printTierDetails(player, tier, forced)
-    toPlayer(player, {"homeworld-reloaded.tier", tier}, forced)
-    for _,r in pairs(settings[tier].requirements) do
-        toPlayer(player,{"", tostring(r.count) .. " [img=item/" .. r.name .. "]"}, forced)
+    toPlayer(player, { "homeworld-reloaded.tier", tier }, forced)
+    for _, r in pairs(settings[tier].requirements) do
+        toPlayer(player, { "", tostring(r.count) .. " [img=item/" .. r.name .. "]" }, forced)
     end
 end
 
@@ -27,7 +41,9 @@ local function update_portal(portal)
     local any = false
     for index = 1, #inventory do
         if inventory[index] and inventory[index].valid_for_read then
-            local requirements = find(tier_settings.requirements, inventory[index].name, function(i) return i.name end)
+            local requirements = find(tier_settings.requirements, inventory[index].name, function(i)
+                return i.name
+            end)
             if requirements then
                 local current = stockpile[inventory[index].name] or 0
                 local max = requirements.count * global.homeworld.population * 2
@@ -41,25 +57,29 @@ local function update_portal(portal)
     end
     if any then
         inventory.sort_and_merge()
-        portal.surface.create_entity{ name = "hw-portal-sound", position = portal.position, force = portal.force, target = portal }
+        portal.surface.create_entity { name = "hw-portal-sound", position = portal.position, force = portal.force, target = portal }
     end
 end
 
 local function min_completion(results, skip_new)
     local min = 2
-    for _,r in pairs(results) do
+    for _, r in pairs(results) do
         if not skip_new or not r.new then
-            if r.completion < min then min = r.completion end
+            if r.completion < min then
+                min = r.completion
+            end
         end
     end
     return min
 end
 
 local function update_stockpile(results, factor, skip_new)
-    if factor <= 0 then return end
+    if factor <= 0 then
+        return
+    end
     local tier_settings = settings[global.homeworld.tier]
     local stock = global.homeworld.stockpile
-    for _,r in pairs(tier_settings.requirements) do
+    for _, r in pairs(tier_settings.requirements) do
         local result = results[r.name]
         if not skip_new or not result.new then
             local consumption = factor * result.count * global.homeworld.population
@@ -74,8 +94,8 @@ end
 
 local function handle_no_change(results)
     local factor = min_completion(results, false)
-    update_stockpile(results, 1,true)
-    toAllPlayers({ "homeworld-reloaded.day-no-change", math.floor(factor * 100)}, false)
+    update_stockpile(results, 1, true)
+    toAllPlayers({ "homeworld-reloaded.day-no-change", math.floor(factor * 100) }, false)
 end
 
 local function handle_increase(results)
@@ -87,7 +107,8 @@ local function handle_increase(results)
     if hw.population > (hw.max_population or 0) then
         hw.max_population = hw.population
     end
-    toAllPlayers({ "homeworld-reloaded.day-success", math.floor(factor * 100), delta, hw.population}, false)
+    toAllPlayers({ "homeworld-reloaded.day-success", math.floor(factor * 100), delta, hw.population }, false)
+    check_achievements()
 end
 
 local function handle_decrease(results)
@@ -99,11 +120,11 @@ local function handle_decrease(results)
     if hw.population + delta < lower_limit then
         if hw.population > lower_limit then
             hw.population = lower_limit
-            toAllPlayers({ "homeworld-reloaded.min-pop-reached"}, false)
+            toAllPlayers({ "homeworld-reloaded.min-pop-reached" }, false)
         end
     else
         hw.population = hw.population + delta
-        toAllPlayers({ "homeworld-reloaded.day-fail", math.floor(factor * 100), -delta, hw.population}, false)
+        toAllPlayers({ "homeworld-reloaded.day-fail", math.floor(factor * 100), -delta, hw.population }, false)
     end
 end
 
@@ -119,7 +140,7 @@ local function with_portal_for_rewards(consumer)
     local best
     local best_empty = 0
     for _, surface in pairs(game.surfaces) do
-        for _, portal in pairs(surface.find_entities_filtered{ name="hw-portal"}) do
+        for _, portal in pairs(surface.find_entities_filtered { name = "hw-portal" }) do
             local inventory = portal.get_inventory(1)
 
             local empty = #inventory - count_filled_slots(inventory.get_contents())
@@ -148,7 +169,7 @@ local function deliver_rewards(rewards)
     local hw = global.homeworld
     local success = with_portal_for_rewards(function(portal)
         local lost = false
-        for _,r in pairs(rewards) do
+        for _, r in pairs(rewards) do
             if portal.insert({ name = r.name, count = r.count }) < r.count then
                 lost = true
             end
@@ -156,7 +177,7 @@ local function deliver_rewards(rewards)
         return lost
     end)
 
-    toAllPlayers({ "homeworld-reloaded.tier-up-first", hw.tier, settings[hw.tier].pop_max}, true)
+    toAllPlayers({ "homeworld-reloaded.tier-up-first", hw.tier, settings[hw.tier].pop_max }, true)
     if not success then
         toAllPlayers({ "homeworld-reloaded.rewards-lost" }, false)
     end
@@ -167,7 +188,7 @@ local function deliver_repeating_rewards(rewards)
     local reward_count = 0
     local success = with_portal_for_rewards(function(portal)
         local lost = false
-        for _,r in pairs(rewards) do
+        for _, r in pairs(rewards) do
             reward_count = math.floor(r.count * hw.population)
             if portal.insert({ name = r.name, count = reward_count }) < reward_count then
                 lost = true
@@ -176,7 +197,7 @@ local function deliver_repeating_rewards(rewards)
         return lost
     end)
 
-    toAllPlayers({ "homeworld-reloaded.max-tier-reward", reward_count}, false)
+    toAllPlayers({ "homeworld-reloaded.max-tier-reward", reward_count }, false)
     if not success then
         toAllPlayers({ "homeworld-reloaded.rewards-lost" }, false)
     end
@@ -190,17 +211,17 @@ local function check_tier_update(requirements_for_repeating_met)
         if hw.max_tier < hw.tier then
             hw.max_tier = hw.tier
             deliver_rewards(tier_settings.upgrade_rewards)
-            for _,player in pairs(game.players) do
+            for _, player in pairs(game.players) do
                 printTierDetails(player, hw.tier, false)
             end
         elseif settings[hw.tier].pop_max then
-            toAllPlayers({ "homeworld-reloaded.tier-up", hw.tier, settings[hw.tier].pop_max}, false)
+            toAllPlayers({ "homeworld-reloaded.tier-up", hw.tier, settings[hw.tier].pop_max }, false)
         else
             toAllPlayers({ "homeworld-reloaded.tier-up-max", hw.tier }, false)
         end
     elseif hw.tier > 1 and hw.population <= tier_settings.pop_min then
         hw.tier = hw.tier - 1
-        toAllPlayers({ "homeworld-reloaded.tier-down", hw.tier, settings[hw.tier].pop_min}, false)
+        toAllPlayers({ "homeworld-reloaded.tier-down", hw.tier, settings[hw.tier].pop_min }, false)
     elseif not tier_settings.pop_max and requirements_for_repeating_met then
         deliver_repeating_rewards(tier_settings.recurring_rewards)
     end
@@ -218,7 +239,9 @@ local function on_next_day()
         results[r.name].completion = stock / results[r.name].consumption
         if results[r.name].completion < 1 then
             can_increase = false
-            if not r.new then can_decrease = true end
+            if not r.new then
+                can_decrease = true
+            end
         end
     end
 
@@ -235,8 +258,8 @@ end
 
 local function spawn(position)
     local surface = game.get_surface(1)
-    if surface.can_place_entity{name="hw-portal", position=position, force="player", build_check_type=defines.build_check_type.ghost_place} then
-        local entity = surface.create_entity{name="hw-portal", position=position, force="player"}
+    if surface.can_place_entity { name = "hw-portal", position = position, force = "player", build_check_type = defines.build_check_type.ghost_place } then
+        local entity = surface.create_entity { name = "hw-portal", position = position, force = "player" }
         if entity ~= nil then
             table.insert(global["hw-portal"], entity)
             return true
@@ -248,12 +271,12 @@ end
 return {
     on_new_player = function(event)
         local player = game.get_player(event.player_index)
-        toPlayer(player, {"homeworld-reloaded.welcome"}, true)
-        toPlayer(player, {"homeworld-reloaded.command"}, true)
+        toPlayer(player, { "homeworld-reloaded.welcome" }, true)
+        toPlayer(player, { "homeworld-reloaded.command" }, true)
     end,
 
     first_day = function()
-        for _,player in pairs(game.players) do
+        for _, player in pairs(game.players) do
             printTierDetails(player, 1, false)
         end
     end,
@@ -265,7 +288,7 @@ return {
         if event.name == "hw" or event.name == "homeworld" then
             local player = game.get_player(event.player_index)
             if event.parameter == nil then
-                toPlayer(player, {"homeworld-reloaded.command"}, true)
+                toPlayer(player, { "homeworld-reloaded.command" }, true)
             elseif event.parameter:sub(1, 5) == "tier " then
                 local tier = tonumber(event.parameter:sub(5, event.parameter:len()))
                 if settings[tier] ~= nil then
@@ -273,9 +296,11 @@ return {
                 end
             elseif event.parameter:sub(1, 2) == "st" then
                 if settings[global.homeworld.tier].pop_max then
-                    toPlayer(player, {"homeworld-reloaded.status", global.homeworld.tier, global.homeworld.population, settings[global.homeworld.tier].pop_max, global.homeworld.max_population}, true)
+                    toPlayer(player, { "homeworld-reloaded.status", global.homeworld.tier, global.homeworld.population,
+                        settings[global.homeworld.tier].pop_max, global.homeworld.max_population }, true)
                 else
-                    toPlayer(player, {"homeworld-reloaded.status-max", global.homeworld.tier, global.homeworld.population, global.homeworld.max_population}, true)
+                    toPlayer(player, { "homeworld-reloaded.status-max",
+                        global.homeworld.tier, global.homeworld.population, global.homeworld.max_population }, true)
                 end
                 printTierDetails(player, global.homeworld.tier, true)
             end
@@ -283,9 +308,17 @@ return {
     end,
 
     spawn = function()
-        if spawn({ -5, -5}) then return end
-        if spawn({ -5,  5}) then return end
-        if spawn({  5,  5}) then return end
-        if spawn({  5, -5}) then return end
+        if spawn({ -5, -5 }) then
+            return
+        end
+        if spawn({ -5, 5 }) then
+            return
+        end
+        if spawn({ 5, 5 }) then
+            return
+        end
+        if spawn({ 5, -5 }) then
+            return
+        end
     end
 }

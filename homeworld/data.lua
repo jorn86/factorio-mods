@@ -1,3 +1,4 @@
+require("prototypes.achievements")
 require("prototypes.brewery")
 require("prototypes.farm")
 require("prototypes.fishery")
