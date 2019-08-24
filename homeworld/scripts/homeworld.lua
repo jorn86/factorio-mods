@@ -15,23 +15,21 @@ end
 
 local function check_achievements()
     for _, player in pairs(game.players) do
-        if global.homeworld.population >= 25000 then
-            player.unlock_achievement("hw-25k")
-        end
-        if global.homeworld.population >= 100000 then
-            player.unlock_achievement("hw-100k")
-        end
-        if global.homeworld.population >= 500000 then
-            player.unlock_achievement("hw-500k")
-        end
+        if global.homeworld.population >= 25000 then player.unlock_achievement("hw-25k") end
+        if global.homeworld.population >= 100000 then player.unlock_achievement("hw-100k") end
+        if global.homeworld.population >= 500000 then player.unlock_achievement("hw-500k") end
     end
 end
 
 local function printTierDetails(player, tier, forced)
     toPlayer(player, { "homeworld-reloaded.tier", tier }, forced)
+    local message = {}
     for _, r in pairs(settings[tier].requirements) do
-        toPlayer(player, { "", tostring(r.count) .. " [img=item/" .. r.name .. "]" }, forced)
+        table.insert(message, ",  ")
+        table.insert(message, tostring(r.count) .. " [img=item/" .. r.name .. "]")
     end
+    message[1] = ""
+    toPlayer(player, message, forced)
 end
 
 local function update_portal(portal)
@@ -261,7 +259,7 @@ local function spawn(position)
     if surface.can_place_entity { name = "hw-portal", position = position, force = "player", build_check_type = defines.build_check_type.ghost_place } then
         local entity = surface.create_entity { name = "hw-portal", position = position, force = "player" }
         if entity ~= nil then
-            table.insert(global["hw-portal"], entity)
+            global["hw-portal"] = { entity }
             return true
         end
     end
@@ -297,10 +295,10 @@ return {
             elseif event.parameter:sub(1, 2) == "st" then
                 if settings[global.homeworld.tier].pop_max then
                     toPlayer(player, { "homeworld-reloaded.status", global.homeworld.tier, global.homeworld.population,
-                        settings[global.homeworld.tier].pop_max, global.homeworld.max_population }, true)
+                                       settings[global.homeworld.tier].pop_max, global.homeworld.max_population }, true)
                 else
                     toPlayer(player, { "homeworld-reloaded.status-max",
-                        global.homeworld.tier, global.homeworld.population, global.homeworld.max_population }, true)
+                                       global.homeworld.tier, global.homeworld.population, global.homeworld.max_population }, true)
                 end
                 printTierDetails(player, global.homeworld.tier, true)
             end
@@ -308,17 +306,9 @@ return {
     end,
 
     spawn = function()
-        if spawn({ -5, -5 }) then
-            return
-        end
-        if spawn({ -5, 5 }) then
-            return
-        end
-        if spawn({ 5, 5 }) then
-            return
-        end
-        if spawn({ 5, -5 }) then
-            return
-        end
+        if spawn({ -5, -5 }) then return end
+        if spawn({ -5, 5 }) then return end
+        if spawn({ 5, 5 }) then return end
+        if spawn({ 5, -5 }) then return end
     end
 }
