@@ -11,4 +11,11 @@ data:extend({
         default_value = true,
         setting_type = "startup",
     },
+    {
+        type = "string-setting",
+        name = "hw-mode",
+        default_value = "standard",
+        allowed_values = { "standard", "military" },
+        setting_type = "startup",
+    },
 })
