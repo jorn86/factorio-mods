@@ -26,7 +26,7 @@ data:extend({
             { type = "unlock-recipe", recipe = "hw-wheat" },
         },
         unit = {
-            count = 50,
+            count = 10,
             ingredients = {
                 { "automation-science-pack", 1 },
             },

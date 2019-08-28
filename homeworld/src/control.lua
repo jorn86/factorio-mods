@@ -28,12 +28,14 @@ local function init()
 end
 
 local function on_built(event)
+    portal_updater.on_built(event.created_entity or event.entity)
     for _,u in pairs(updaters) do
-        u.on_built(event.created_entity)
+        u.on_built(event.created_entity or event.entity)
     end
 end
 
 local function on_destroy(event)
+    portal_updater.on_destroy(event.entity)
     for _,u in pairs(updaters) do
         u.on_destroy(event.entity)
     end
@@ -64,10 +66,18 @@ script.on_nth_tick(2500, on_update_portal)
 script.on_event(defines.events.on_player_created, portal.on_new_player)
 script.on_event(defines.events.on_built_entity, on_built)
 script.on_event(defines.events.on_robot_built_entity, on_built)
+script.on_event(defines.events.script_raised_built, on_built)
 script.on_event(defines.events.on_player_mined_entity, on_destroy)
 script.on_event(defines.events.on_robot_mined_entity, on_destroy)
 script.on_event(defines.events.on_entity_died, on_destroy)
+script.on_event(defines.events.script_raised_destroy, on_destroy)
 script.on_event(defines.events.on_tick, on_tick)
 
 commands.add_command("hw", {"homeworld-reloaded.command"}, portal.command)
 commands.add_command("homeworld", {"homeworld-reloaded.command"}, portal.command)
+commands.add_command("hwreset", {"homeworld-reloaded.command"}, function(event)
+    portal_updater.on_reinit()
+    for _, updater in pairs(updaters) do
+        updater.on_reinit()
+    end
+end)

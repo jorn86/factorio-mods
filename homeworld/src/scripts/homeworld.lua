@@ -1,35 +1,91 @@
 require("scripts.utility")
 local settings = require("scripts.tier_config")
 
-local function toPlayer(player, message, forced)
+local function to_player(player, message, forced)
     if forced or player.mod_settings["hw-print"].value then
         player.print(message)
     end
 end
 
-local function toAllPlayers(message, forced)
+local function to_all_players(message, forced)
     for _, player in pairs(game.players) do
-        toPlayer(player, message, forced)
+        to_player(player, message, forced)
     end
 end
 
-local function check_achievements()
-    for _, player in pairs(game.players) do
-        if global.homeworld.population >= 25000 then player.unlock_achievement("hw-25k") end
-        if global.homeworld.population >= 100000 then player.unlock_achievement("hw-100k") end
-        if global.homeworld.population >= 500000 then player.unlock_achievement("hw-500k") end
+local function mark(player, position, color)
+    rendering.draw_circle {
+        color = color,
+        radius = 0.5,
+        width = 2,
+        filled = false,
+        target = position,
+        surface = player.surface,
+        players = { player },
+        draw_on_ground = false,
+        time_to_live = 300
+    }
+end
+
+local function debug(player)
+    local message = { "homeworld-reloaded.debug", table_size(global["hw-portal"]), table_size(global["hw-farm"]), table_size(global["hw-fishery"]) }
+    to_player(player, message, true)
+
+    for _, entity in pairs(global["hw-portal"]) do
+        if entity.valid then
+            mark(player, entity.position, { r = 255, g = 0, b = 255 })
+        end
+    end
+    for _, entity in pairs(global["hw-farm"]) do
+        if entity[1].valid then
+            mark(player, entity[1].position, { r = 0, g = 255, b = 0 })
+        end
+    end
+    for _, entity in pairs(global["hw-fishery"]) do
+        if entity[1].valid then
+            mark(player, entity[1].position, { r = 0, g = 0, b = 255 })
+        end
+    end
+    for _, entity in pairs(global["hw-requirements-combinator"]) do
+        if entity.valid then
+            mark(player, entity.position, { r = 0, g = 255, b = 255 })
+        end
+    end
+    for _, entity in pairs(global["hw-stockpile-combinator"]) do
+        if entity.valid then
+            mark(player, entity.position, { r = 0, g = 255, b = 255 })
+        end
+    end
+    for _, entity in pairs(global["hw-status-combinator"]) do
+        if entity.valid then
+            mark(player, entity.position, { r = 0, g = 255, b = 255 })
+        end
     end
 end
 
-local function printTierDetails(player, tier, forced)
-    toPlayer(player, { "homeworld-reloaded.tier", tier }, forced)
+local function print_tier_details(player, tier, forced)
+    to_player(player, { "homeworld-reloaded.tier", tier }, forced)
     local message = {}
     for _, r in pairs(settings[tier].requirements) do
         table.insert(message, ",  ")
         table.insert(message, tostring(r.count) .. " [img=item/" .. r.name .. "]")
     end
     message[1] = ""
-    toPlayer(player, message, forced)
+    to_player(player, message, forced)
+end
+
+local function check_achievements()
+    for _, player in pairs(game.players) do
+        if global.homeworld.population >= 25000 then
+            player.unlock_achievement("hw-25k")
+        end
+        if global.homeworld.population >= 100000 then
+            player.unlock_achievement("hw-100k")
+        end
+        if global.homeworld.population >= 500000 then
+            player.unlock_achievement("hw-500k")
+        end
+    end
 end
 
 local function update_portal(portal)
@@ -93,7 +149,7 @@ end
 local function handle_no_change(results)
     local factor = min_completion(results, false)
     update_stockpile(results, 1, true)
-    toAllPlayers({ "homeworld-reloaded.day-no-change", math.floor(factor * 100) }, false)
+    to_all_players({ "homeworld-reloaded.day-no-change", math.floor(factor * 100) }, false)
 end
 
 local function handle_increase(results)
@@ -105,7 +161,7 @@ local function handle_increase(results)
     if hw.population > (hw.max_population or 0) then
         hw.max_population = hw.population
     end
-    toAllPlayers({ "homeworld-reloaded.day-success", math.floor(factor * 100), delta, hw.population }, false)
+    to_all_players({ "homeworld-reloaded.day-success", math.floor(factor * 100), delta, hw.population }, false)
     check_achievements()
 end
 
@@ -118,11 +174,11 @@ local function handle_decrease(results)
     if hw.population + delta < lower_limit then
         if hw.population > lower_limit then
             hw.population = lower_limit
-            toAllPlayers({ "homeworld-reloaded.min-pop-reached" }, false)
+            to_all_players({ "homeworld-reloaded.min-pop-reached" }, false)
         end
     else
         hw.population = hw.population + delta
-        toAllPlayers({ "homeworld-reloaded.day-fail", math.floor(factor * 100), -delta, hw.population }, false)
+        to_all_players({ "homeworld-reloaded.day-fail", math.floor(factor * 100), -delta, hw.population }, false)
     end
 end
 
@@ -175,9 +231,9 @@ local function deliver_rewards(rewards)
         return lost
     end)
 
-    toAllPlayers({ "homeworld-reloaded.tier-up-first", hw.tier, settings[hw.tier].pop_max }, true)
+    to_all_players({ "homeworld-reloaded.tier-up-first", hw.tier, settings[hw.tier].pop_max }, true)
     if not success then
-        toAllPlayers({ "homeworld-reloaded.rewards-lost" }, false)
+        to_all_players({ "homeworld-reloaded.rewards-lost" }, false)
     end
 end
 
@@ -195,9 +251,9 @@ local function deliver_repeating_rewards(rewards)
         return lost
     end)
 
-    toAllPlayers({ "homeworld-reloaded.max-tier-reward", reward_count }, false)
+    to_all_players({ "homeworld-reloaded.max-tier-reward", reward_count }, false)
     if not success then
-        toAllPlayers({ "homeworld-reloaded.rewards-lost" }, false)
+        to_all_players({ "homeworld-reloaded.rewards-lost" }, false)
     end
 end
 
@@ -210,16 +266,16 @@ local function check_tier_update(requirements_for_repeating_met)
             hw.max_tier = hw.tier
             deliver_rewards(tier_settings.upgrade_rewards)
             for _, player in pairs(game.players) do
-                printTierDetails(player, hw.tier, false)
+                print_tier_details(player, hw.tier, false)
             end
         elseif settings[hw.tier].pop_max then
-            toAllPlayers({ "homeworld-reloaded.tier-up", hw.tier, settings[hw.tier].pop_max }, false)
+            to_all_players({ "homeworld-reloaded.tier-up", hw.tier, settings[hw.tier].pop_max }, false)
         else
-            toAllPlayers({ "homeworld-reloaded.tier-up-max", hw.tier }, false)
+            to_all_players({ "homeworld-reloaded.tier-up-max", hw.tier }, false)
         end
     elseif hw.tier > 1 and hw.population <= tier_settings.pop_min then
         hw.tier = hw.tier - 1
-        toAllPlayers({ "homeworld-reloaded.tier-down", hw.tier, settings[hw.tier].pop_min }, false)
+        to_all_players({ "homeworld-reloaded.tier-down", hw.tier, settings[hw.tier].pop_min }, false)
     elseif not tier_settings.pop_max and requirements_for_repeating_met then
         deliver_repeating_rewards(tier_settings.recurring_rewards)
     end
@@ -269,13 +325,13 @@ end
 return {
     on_new_player = function(event)
         local player = game.get_player(event.player_index)
-        toPlayer(player, { "homeworld-reloaded.welcome" }, true)
-        toPlayer(player, { "homeworld-reloaded.command" }, true)
+        to_player(player, { "homeworld-reloaded.welcome" }, true)
+        to_player(player, { "homeworld-reloaded.command" }, true)
     end,
 
     first_day = function()
         for _, player in pairs(game.players) do
-            printTierDetails(player, 1, false)
+            print_tier_details(player, 1, false)
         end
     end,
 
@@ -286,29 +342,39 @@ return {
         if event.name == "hw" or event.name == "homeworld" then
             local player = game.get_player(event.player_index)
             if event.parameter == nil then
-                toPlayer(player, { "homeworld-reloaded.command" }, true)
+                to_player(player, { "homeworld-reloaded.command" }, true)
+            elseif event.parameter:sub(1, 5) == "debug" then
+                debug(player)
             elseif event.parameter:sub(1, 5) == "tier " then
                 local tier = tonumber(event.parameter:sub(5, event.parameter:len()))
                 if settings[tier] ~= nil then
-                    printTierDetails(player, tier, true)
+                    print_tier_details(player, tier, true)
                 end
             elseif event.parameter:sub(1, 2) == "st" then
                 if settings[global.homeworld.tier].pop_max then
-                    toPlayer(player, { "homeworld-reloaded.status", global.homeworld.tier, global.homeworld.population,
-                                       settings[global.homeworld.tier].pop_max, global.homeworld.max_population }, true)
+                    to_player(player, { "homeworld-reloaded.status", global.homeworld.tier, global.homeworld.population,
+                                        settings[global.homeworld.tier].pop_max, global.homeworld.max_population }, true)
                 else
-                    toPlayer(player, { "homeworld-reloaded.status-max",
-                                       global.homeworld.tier, global.homeworld.population, global.homeworld.max_population }, true)
+                    to_player(player, { "homeworld-reloaded.status-max",
+                                        global.homeworld.tier, global.homeworld.population, global.homeworld.max_population }, true)
                 end
-                printTierDetails(player, global.homeworld.tier, true)
+                print_tier_details(player, global.homeworld.tier, true)
             end
         end
     end,
 
     spawn = function()
-        if spawn({ -5, -5 }) then return end
-        if spawn({ -5, 5 }) then return end
-        if spawn({ 5, 5 }) then return end
-        if spawn({ 5, -5 }) then return end
+        if spawn({ -5, -5 }) then
+            return
+        end
+        if spawn({ -5, 5 }) then
+            return
+        end
+        if spawn({ 5, 5 }) then
+            return
+        end
+        if spawn({ 5, -5 }) then
+            return
+        end
     end
 }

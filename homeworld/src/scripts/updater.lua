@@ -1,8 +1,8 @@
 require("scripts.utility")
 
 function register_updater(name, update)
-    local function init_global()
-        if not global[name] then
+    local function init_global(forced)
+        if forced or not global[name] then
             global[name] = {}
             for_all_entities(name, function(entity)
                 table.insert(global[name], entity)
@@ -40,6 +40,7 @@ function register_updater(name, update)
 
     return {
         on_init = function() global[name] = {} end,
+        on_reinit = function() init_global(true) end,
         on_built = on_built,
         on_destroy = on_destroy,
         update_all = update_all,
@@ -65,8 +66,8 @@ local function find_beacon(entity)
 end
 
 function register_updater_with_beacon(name, update)
-    local function init_global()
-        if not global[name] then
+    local function init_global(forced)
+        if forced or not global[name] then
             global[name] = {}
             for_all_entities(name, function(entity)
                 table.insert(global[name], { entity, find_beacon(entity) } )
@@ -111,6 +112,7 @@ function register_updater_with_beacon(name, update)
 
     return {
         on_init = function() global[name] = {} end,
+        on_reinit = function() init_global(true) end,
         on_built = on_built,
         on_destroy = on_destroy,
         update_all = function() end,
