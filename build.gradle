@@ -8,19 +8,19 @@ subprojects {
     task zip(type: Zip) {
         def info = new JsonSlurper().parse(file('info.json'))
         def name = "${info.name}_${info.version}"
-
-        from '.'
-        into name
-        include 'info.json'
-        include 'README.md'
-        include 'changelog.txt'
-        include '**/*.lua'
-        include 'graphics/**'
-        include 'locale/**'
-        include 'migrations/**'
-        include 'sound/**'
         archiveFileName.set("${name}.zip")
         destinationDirectory = file('build')
+        into name
+
+        from ('./src') {
+            include '**'
+        }
+
+        from ('.') {
+            include 'info.json'
+            include 'README.md'
+            include 'changelog.txt'
+        }
     }
     assemble.dependsOn(zip)
 
