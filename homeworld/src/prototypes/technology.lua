@@ -270,7 +270,7 @@ data:extend({
         name = "hw-electronics",
         icon = "__homeworld-reloaded__/graphics/icons/electronics.png",
         icon_size = 32,
-        prerequisites = { "advanced-electronics-2", "battery" },
+        prerequisites = { "utility-science-pack" },
         effects = {
             { type = "unlock-recipe", recipe = "hw-electronics" },
         },

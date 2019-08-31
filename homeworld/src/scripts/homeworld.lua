@@ -74,17 +74,21 @@ local function print_tier_details(player, tier, forced)
     to_player(player, message, forced)
 end
 
+local function check_achievements_for(player)
+    if global.homeworld.population >= 25000 then
+        player.unlock_achievement("hw-25k")
+    end
+    if global.homeworld.population >= 100000 then
+        player.unlock_achievement("hw-100k")
+    end
+    if global.homeworld.population >= 500000 then
+        player.unlock_achievement("hw-500k")
+    end
+end
+
 local function check_achievements()
     for _, player in pairs(game.players) do
-        if global.homeworld.population >= 25000 then
-            player.unlock_achievement("hw-25k")
-        end
-        if global.homeworld.population >= 100000 then
-            player.unlock_achievement("hw-100k")
-        end
-        if global.homeworld.population >= 500000 then
-            player.unlock_achievement("hw-500k")
-        end
+        check_achievements_for(player)
     end
 end
 
@@ -327,6 +331,7 @@ return {
         local player = game.get_player(event.player_index)
         to_player(player, { "homeworld-reloaded.welcome" }, true)
         to_player(player, { "homeworld-reloaded.command" }, true)
+        check_achievements_for(player)
     end,
 
     first_day = function()

@@ -3,6 +3,10 @@ Version: 0.1.0
 Date: 24.08.2019
   Features:
     - Added military mode, changing the requirements of your Homeworld
+  Changes:
+    - Pollution now has more effect on farms and fisheries
+    - Increased HP of some buildings
+    - Increased crafting time of Sawmill recipes
 ---------------------------------------------------------------------------------------------------
 Version: 0.0.6
 Date: 24.08.2019

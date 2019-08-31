@@ -10,7 +10,7 @@ data:extend({
         icon_size = 32,
         flags = { "player-creation", "placeable-player" },
         minable = { mining_time = 0.3, result = "hw-brewery" },
-        max_health = 50,
+        max_health = 300,
         corpse = "big-remnants",
         dying_explosion = "medium-explosion",
         collision_box = {{-1.4, -1.4}, {1.4, 1.4}},

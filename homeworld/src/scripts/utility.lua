@@ -9,13 +9,11 @@ function fill_beacon(beacon, fertility)
     if not (beacon and beacon.valid) then return end
     local pollution = beacon.surface.get_pollution(beacon.position)
     local modules = beacon.get_module_inventory()
-    local increase = math.floor(fertility - pollution)
+    local increase = math.floor(fertility - (pollution * 3))
     if increase > 0 and (modules.get_item_count("hw-polluted-module") ~= 0 or modules.get_item_count("hw-fertile-module") ~= increase) then
-        print(serpent.line(beacon.position) .. " pollution " .. tostring(pollution) .. " / fertility " .. tostring(fertility))
         modules.clear()
         modules.insert({ name = "hw-fertile-module", count = increase })
     elseif increase < 0 and (modules.get_item_count("hw-polluted-module") ~= -increase or modules.get_item_count("hw-fertile-module") ~= 0) then
-        print(serpent.line(beacon.position) .. " pollution " .. tostring(pollution) .. " / fertility " .. tostring(fertility))
         modules.clear()
         modules.insert({ name = "hw-polluted-module", count = -increase })
     end

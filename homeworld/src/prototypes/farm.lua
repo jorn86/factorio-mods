@@ -16,7 +16,7 @@ data:extend({
         icon_size = 32,
         flags = { "player-creation", "placeable-player" },
         minable = { mining_time = 0.3, result = "hw-farm" },
-        max_health = 50,
+        max_health = 150,
         corpse = "big-remnants",
         collision_box = { { -4.4, -4.4 }, { 4.4, 4.4 } },
         selection_box = { { -4.5, -4.5 }, { 4.5, 4.5 } },

@@ -1,7 +1,6 @@
 local function combinator_entity(name)
     local entity = table.deepcopy(data.raw["constant-combinator"]["constant-combinator"])
     entity.name = name
-    entity.localised_name = {"entity-name." .. name}
     entity.minable.result = name
     return entity
 end
