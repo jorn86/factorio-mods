@@ -4,7 +4,7 @@ local fishery = require("scripts.fishery")
 local portal = require("scripts.homeworld")
 require("scripts.updater")
 
-local portal_updater = register_updater("hw-portal", portal.update_portal);
+local portal_updater = register_updater("hw-portal", portal.update_portal, true);
 local updaters = {
     register_updater("hw-requirements-combinator", combinator.update_requirements_combinator),
     register_updater("hw-status-combinator", combinator.update_status_combinator),

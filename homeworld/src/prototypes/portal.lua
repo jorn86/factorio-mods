@@ -35,12 +35,12 @@ data:extend({
         circuit_wire_max_distance = 9,
         circuit_wire_connection_point = {
             shadow = {
-                red = { 2.4, 2.4 },
-                green = { 2.4, 2.4 }
+                red = { 1, 0 },
+                green = { 1, 0 }
             },
             wire = {
-                red = { 2.4, 2.4 },
-                green = { 2.4, 2.4 }
+                red = { 1, 0 },
+                green = { 1, 0 }
             }
         },
         inventory_size = 99,

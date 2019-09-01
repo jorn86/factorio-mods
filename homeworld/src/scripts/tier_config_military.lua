@@ -7,7 +7,9 @@ return {{
     },
     upgrade_rewards = {
         { name = "heavy-armor", count = 1 },
-        { name = "submachine-gun", count = 1 },
+        { name = "combat-shotgun", count = 1 },
+        { name = "shotgun-shell", count = 200 },
+        { name = "military-science-pack", count = 100 },
     }
 }, {
     pop_min = 1600,
@@ -18,8 +20,11 @@ return {{
     },
     upgrade_rewards = {
         { name = "hw-portal", count = 1 },
-        { name = "combat-shotgun", count = 1 },
-        { name = "military-science-pack", count = 100 },
+        { name = "modular-armor", count = 1 },
+        { name = "night-vision-equipment", count = 1 },
+        { name = "exoskeleton-equipment", count = 1 },
+        { name = "battery-equipment", count = 2 },
+        { name = "solar-panel-equipment", count = 9 },
     }
 }, {
     pop_min = 3500,
@@ -30,11 +35,10 @@ return {{
         { name = "piercing-rounds-magazine", count = 0.25, new = true },
     },
     upgrade_rewards = {
-        { name = "modular-armor", count = 1 },
-        { name = "nightvision-equipment", count = 1 },
-        { name = "exoskeleton-equipment", count = 1 },
-        { name = "battery-equipment", count = 2 },
-        { name = "solar-panel-equipment", count = 9 },
+        { name = "tank", count = 1 },
+        { name = "cannon-shell", count = 100 },
+        { name = "poison-capsule", count = 50 },
+        { name = "slowdown-capsule", count = 50 },
     }
 }, {
     pop_min = 7000,
@@ -47,8 +51,10 @@ return {{
         { name = "grenade", count = 0.05, new = true },
     },
     upgrade_rewards = {
-        { name = "flamethrower", count = 1 },
-        { name = "tank", count = 1 },
+        { name = "power-armor", count = 1 },
+        { name = "fusion-reactor-equipment", count = 1 },
+        { name = "energy-shield-equipment", count = 2 },
+        { name = "personal-laser-defense-equipment", count = 2 },
     }
 }, {
     pop_min = 10000,
@@ -61,10 +67,10 @@ return {{
         { name = "defender-capsule", count = 0.1, new = true },
     },
     upgrade_rewards = {
-        { name = "power-armor", count = 1 },
-        { name = "fusion-reactor-equipment", count = 1 },
-        { name = "energy-shield-equipment", count = 2 },
-        { name = "personal-laser-defense-equipment", count = 2 },
+        { name = "artillery-turret", count = 1 },
+        { name = "artillery-targeting-remote", count = 1 },
+        { name = "artillery-wagon", count = 1 },
+        { name = "artillery-shell", count = 20 },
     }
 }, {
     pop_min = 16000,
@@ -96,9 +102,7 @@ return {{
         { name = "distractor-capsule", count = 0.05, new = true },
     },
     upgrade_rewards = {
-        { name = "artillery-turret", count = 1 },
-        { name = "artillery-remote", count = 1 },
-        { name = "artillery-shell", count = 20 },
+        { name = "space-science-pack", count = 2000 },
     }
 }, {
     pop_min = 42000,

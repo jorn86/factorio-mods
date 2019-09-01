@@ -1,6 +1,6 @@
 require("scripts.utility")
 
-function register_updater(name, update)
+function register_updater(name, update, operable)
     local function init_global(forced)
         if forced or not global[name] then
             global[name] = {}
@@ -14,6 +14,7 @@ function register_updater(name, update)
     local function on_built(entity)
         init_global()
         if entity.name == name then
+            if not operable then entity.operable = false end
             update(entity)
             table.insert(global[name],  entity)
         end
