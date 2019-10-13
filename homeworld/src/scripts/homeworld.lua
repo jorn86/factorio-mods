@@ -99,15 +99,17 @@ local function update_portal(portal)
     local any = false
     for index = 1, #inventory do
         if inventory[index] and inventory[index].valid_for_read then
-            local requirements = find(tier_settings.requirements, inventory[index].name, function(i)
+            local name = inventory[index].name
+            local requirements = find(tier_settings.requirements, name, function(i)
                 return i.name
             end)
             if requirements then
-                local current = stockpile[inventory[index].name] or 0
+                local current = stockpile[name] or 0
                 local max = requirements.count * global.homeworld.population * 2
                 if current < max then
-                    stockpile[inventory[index].name] = current + inventory[index].count
-                    inventory.remove(inventory[index])
+                    stockpile[name] = current + inventory[index].count
+                    local removed = inventory.remove(inventory[index])
+                    portal.force.item_production_statistics.on_flow(name, -removed)
                     any = true
                 end
             end
