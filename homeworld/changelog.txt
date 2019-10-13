@@ -3,6 +3,9 @@ Version: 0.1.1
 Date: 13.10.2019
   Features:
     - Added the items consumed by a Homeworld Portal to the production statistics
+    - Added command /homeworld stockpile to print the current stockpile contents to the console. Can be useful before you unlock the Stockpile combinator.
+  Changes:
+    - Improved the transition when the next tier requires an upgraded item, by allowing gradual upgrade from the old to the new. For example, if tier 1 requires 1 wheat per person and tier 2 requires 1 bread per person, you can continue feeding the people wheat without risk of losing population, but you will need to feed them bread to increase population.
 ---------------------------------------------------------------------------------------------------
 Version: 0.1.0
 Date: 24.08.2019

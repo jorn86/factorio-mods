@@ -2,6 +2,7 @@ local combinator = require("scripts.combinator")
 local farm = require("scripts.farm")
 local fishery = require("scripts.fishery")
 local portal = require("scripts.homeworld")
+local config = require("scripts.tier_config")
 require("scripts.updater")
 
 local portal_updater = register_updater("hw-portal", portal.update_portal, true);
@@ -81,3 +82,5 @@ commands.add_command("hwreset", {"homeworld-reloaded.command"}, function(event)
         updater.on_reinit()
     end
 end)
+
+remote.add_interface("homeworld", config)
