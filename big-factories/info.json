@@ -1,6 +1,6 @@
 {
   "name": "big-factories",
-  "version": "0.0.11",
+  "version": "0.0.12",
   "title": "Big Factories",
   "author": "Jorn86",
   "homepage": "https://github.com/jorn86/factorio-mods",
@@ -8,7 +8,7 @@
   "description": "Inspired by WhistleStop Factories: Spawns massive furnaces and assembly machines around the map to make the game all about building trains to connect them. Supports buildings from Bob's and Angel's, including labs.",
   "factorio_version": "0.17",
   "dependencies": [
-    "base >= 0.17.63",
+    "base >= 0.17.69",
     "? bobassembly >= 0.17.4",
     "? bobgreenhouse >= 0.17.0",
     "? bobmodules >= 0.17.4",
@@ -16,7 +16,7 @@
     "? bobtech >= 0.17.3",
     "? angelsbioprocessing >= 0.6.2",
     "? angelspetrochem >= 0.8.6",
-    "? angelsrefining >= 0.10.13",
+    "? angelsrefining >= 0.10.14",
     "? angelssmelting >= 0.5.7",
     "! WhistleStopFactories"
   ]
