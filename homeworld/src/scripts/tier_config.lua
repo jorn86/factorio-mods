@@ -98,6 +98,10 @@ return {
         return config
     end,
 
+    get_current_config = function()
+        return config[global.homeworld.tier]
+    end,
+
     set_config = function(modname, new_config)
         local error = validate_config(new_config)
         if error ~= nil then return error end

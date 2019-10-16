@@ -45,9 +45,12 @@ return function(requirements)
     elseif  min_completion_new < 1 then
         consume_goals(goals, 1)
         population_factor = 0
-    else
+    elseif requirements.pop_max then
         consume_goals(goals, min_completion_new)
         population_factor = (min_completion_new - 1) * 0.1
+    else -- last tier, no new requirements
+        consume_goals(goals, min_completion_old)
+        population_factor = (min_completion_old - 1) * 0.1
     end
 
     return {

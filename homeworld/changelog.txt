@@ -1,4 +1,9 @@
 ---------------------------------------------------------------------------------------------------
+Version: 0.1.3
+Date: 16.10.2019
+  Bugfixes:
+    - Fixed negative population increases in some cases. If this still happens, please report a bug on the mod portal.
+---------------------------------------------------------------------------------------------------
 Version: 0.1.2
 Date: 16.10.2019
   Bugfixes:
