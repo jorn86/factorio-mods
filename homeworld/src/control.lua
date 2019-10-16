@@ -76,7 +76,18 @@ script.on_event(defines.events.on_tick, on_tick)
 
 commands.add_command("hw", {"homeworld-reloaded.command"}, portal.command)
 commands.add_command("homeworld", {"homeworld-reloaded.command"}, portal.command)
-commands.add_command("hwreset", {"homeworld-reloaded.command"}, function(event)
+commands.add_command("hwreset", {"homeworld-reloaded.resetcommand"}, function(event)
+    if event.parameter == "full" then
+        global.homeworld = {
+            tier = 1,
+            max_tier = 1,
+            population = 1000,
+            max_population = 1000,
+            stockpile = {},
+        }
+    elseif event.parameter == "stockpile" then
+        global.homeworld.stockpile = {}
+    end
     portal_updater.on_reinit()
     for _, updater in pairs(updaters) do
         updater.on_reinit()

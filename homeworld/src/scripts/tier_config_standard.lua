@@ -13,7 +13,7 @@ return {{
     pop_min = 1600,
     pop_max = 4000,
     requirements = {
-        { old = "hw-wheat", new = "hw-bread", count = 1, new = true },
+        { old = "hw-wheat", new = "hw-bread", count = 1 },
         { old = "raw-fish", count = 0.5 },
     },
     upgrade_rewards = {

@@ -39,3 +39,15 @@ function for_all_entities(name, consumer)
         end
     end
 end
+
+function to_player(player, message, forced)
+    if forced or player.mod_settings["hw-print"].value then
+        player.print(message)
+    end
+end
+
+function to_all_players(message, forced)
+    for _, player in pairs(game.players) do
+        to_player(player, message, forced)
+    end
+end

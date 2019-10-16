@@ -1,4 +1,9 @@
 ---------------------------------------------------------------------------------------------------
+Version: 0.1.2
+Date: 16.10.2019
+  Bugfixes:
+    - Fixed several crashes relating to requirements, caused by changes in the last version
+---------------------------------------------------------------------------------------------------
 Version: 0.1.1
 Date: 13.10.2019
   Features:

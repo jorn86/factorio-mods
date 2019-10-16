@@ -1,12 +1,40 @@
 local mode = settings.startup["hw-mode"].value
 local military = require("scripts.tier_config_military")
 local standard = require("scripts.tier_config_standard")
+require("scripts.utility")
+
+local function validate_requirements(i, requirements, allow_new)
+    if type(requirements) ~= "table" then
+        return i .. ".requirements expected table, was " .. type(requirements)
+    end
+    for j, r in pairs(requirements) do
+        if type(r.count) ~= "number" then
+            return i .. ".requirements[" .. j .. "].count expected number, was " .. type(r.count)
+        end
+        if not allow_new then
+            if type(r.old) ~= "string" then
+                return i .. ".requirements[" .. j .. "].old expected item name, was " .. type(r.old)
+            end
+        else
+            if not (r.old or r.new) then
+                return i .. ".requirements[" .. j .. "].must specify at least .old or .new"
+            end
+            if r.old and type(r.old) ~= "string" then
+                return i .. ".requirements[" .. j .. "].old expected item name, was " .. type(r.old)
+            end
+            if r.new and type(r.new) ~= "string" then
+                return i .. ".requirements[" .. j .. "].new expected item name, was " .. type(r.new)
+            end
+        end
+    end
+end
 
 local function validate_config(config)
     local ni = 1
     local pop_min = 100
     local pop_max = 1100
-    local last = false                for i, tier in pairs(config) do
+    local last = false
+    for i, tier in pairs(config) do
         if i ~= ni then
             return "config table must be a continuous list of tiers"
         end
@@ -19,10 +47,9 @@ local function validate_config(config)
         if tier.pop_min <= pop_min then
             return i .. ".pop_min must increase from previous tier (starting at 100)"
         end
-        if type(tier.requirements) ~= "table" then
-            return i .. ".requirements expected table, was " .. type(tier.requirements)
-        end
         if tier.pop_max then
+            local error = validate_requirements(i, tier.requirements, true)
+            if error then return error end
             if type(tier.pop_max) ~= "number" then
                 return i .. ".pop_max expected number, was " .. type(tier.pop_max)
             end
@@ -36,6 +63,8 @@ local function validate_config(config)
                 return i .. ".recurring_rewards is only available as last tier"
             end
         else
+            local error = validate_requirements(i, tier.requirements, false)
+            if error then return error end
             if type(tier.recurring_rewards) ~= "table" then
                 return i .. ".recurring_rewards expected table, was " .. type(tier.upgrade_rewards)
             end
@@ -49,6 +78,7 @@ local function validate_config(config)
     if not last then
         return "missing last tier config with recurring rewards"
     end
+    print("config validated")
 end
 
 local config = standard
@@ -56,7 +86,8 @@ if mode == "military" then
     config = military
 end
 
-validate_config(config)
+local message = validate_config(config)
+if message then error(message) end
 
 return {
     get_status = function()

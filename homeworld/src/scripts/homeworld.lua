@@ -2,18 +2,6 @@ require("scripts.utility")
 local config = require("scripts.tier_config")
 local consume = require("scripts.consumer")
 
-local function to_player(player, message, forced)
-    if forced or player.mod_settings["hw-print"].value then
-        player.print(message)
-    end
-end
-
-local function to_all_players(message, forced)
-    for _, player in pairs(game.players) do
-        to_player(player, message, forced)
-    end
-end
-
 local function mark(player, position, color)
     rendering.draw_circle {
         color = color,

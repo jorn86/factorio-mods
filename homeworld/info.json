@@ -1,11 +1,11 @@
 {
   "name": "homeworld-reloaded",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "title": "Homeworld",
   "author": "Jorn86",
   "homepage": "https://github.com/jorn86/factorio-mods",
   "contact": "factoriomods@hertsig.org",
   "description": "Supply resources to your homeworld so that civilization can be restored. Update of Homeworld mod, originally by ljdp and Silari.",
   "factorio_version": "0.17",
-  "dependencies": ["base >= 0.17.69"]
+  "dependencies": ["base >= 0.17.70"]
 }
