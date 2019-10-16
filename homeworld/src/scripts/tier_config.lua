@@ -90,22 +90,11 @@ local message = validate_config(config)
 if message then error(message) end
 
 return {
-    get_status = function()
-        return global.homeworld
-    end,
-
     get_config = function()
         return config
     end,
 
     get_current_config = function()
         return config[global.homeworld.tier]
-    end,
-
-    set_config = function(modname, new_config)
-        local error = validate_config(new_config)
-        if error ~= nil then return error end
-        config = new_config
-        to_all_players({ "homeworld-reloaded.config-updated", modname })
     end
 }
