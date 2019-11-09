@@ -56,6 +56,7 @@ data:extend({
     vanilla("battery-mk2-equipment", 3, "equipment"),
     vanilla("personal-roboport-equipment", 0, "equipment"),
     vanilla("personal-roboport-mk2-equipment", 1, "equipment"),
+    vanilla("personal-laser-defense-equipment", 0, "equipment"),
     vanilla("construction-robot", 25, "entity"),
     vanilla("iron-plate", 0, "item"),
     vanilla("copper-plate", 0, "item"),
