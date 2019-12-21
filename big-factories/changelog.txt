@@ -1,4 +1,9 @@
 ---------------------------------------------------------------------------------------------------
+Version: 0.0.14
+Date: 21.12.2019
+  Bugfixes:
+    - Fixed animation speed of big chemical plant smoke. If there are more animations that are way too slow, please make an issue on the mod portal. If I can find more cases like this one, I might be able to make a proper fix instead of an exception for this single case.
+---------------------------------------------------------------------------------------------------
 Version: 0.0.13
 Date: 9.11.2019
   Features:

@@ -23,7 +23,12 @@ local function bumpUp(animation, scaleFactor, animationFactor)
 
     animation.scale = (animation.scale or 1) * scaleFactor
     if type(animation.frame_count) == "number" and animation.frame_count > 1 then
-        animation.animation_speed = (animation.animation_speed or 1) * animationFactor
+        -- I have no idea why the chem plant smoke one needs a custom value
+        if animation.filename and animation.filename:find('chemical%-plant%-smoke%-outer') then
+            animation.animation_speed = 0.5
+        else
+            animation.animation_speed = (animation.animation_speed or 1) * animationFactor
+        end
     end
 end
 
@@ -38,11 +43,9 @@ local function bumpAllAnimations(animation, scaleFactor, animationFactor)
     if type(animation) == "table" then
         if (type(animation.layers) == "table") then
             for _,v in pairs(animation.layers) do
-                --print(serpent.line(v))
                 bumpFullAnimation(v, scaleFactor, animationFactor)
             end
         else
-            --print(serpent.line(animation))
             bumpFullAnimation(animation, scaleFactor, animationFactor)
         end
     end
