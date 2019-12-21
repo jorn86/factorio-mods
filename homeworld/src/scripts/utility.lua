@@ -5,6 +5,22 @@ function find(array, element, picker)
     return nil
 end
 
+function get_homeworld(force)
+    hw = global.homeworld[force.name]
+    if hw == nil then
+        print('creating homeworld for ' .. force.name)
+        hw = {
+            tier = 1,
+            max_tier = 1,
+            population = 1000,
+            max_population = 1000,
+            stockpile = {},
+        }
+        global.homeworld[force.name] = hw
+    end
+    return hw
+end
+
 function fill_beacon(beacon, fertility)
     if not (beacon and beacon.valid) then return end
     local pollution = beacon.surface.get_pollution(beacon.position)
@@ -46,8 +62,8 @@ function to_player(player, message, forced)
     end
 end
 
-function to_all_players(message, forced)
-    for _, player in pairs(game.players) do
+function to_all_players(force, message, forced)
+    for _, player in pairs((force or game).players) do
         to_player(player, message, forced)
     end
 end

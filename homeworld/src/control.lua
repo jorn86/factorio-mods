@@ -3,6 +3,7 @@ local farm = require("scripts.farm")
 local fishery = require("scripts.fishery")
 local portal = require("scripts.homeworld")
 local config = require("scripts.tier_config")
+local upgrade = require("scripts.version_upgrade")
 require("scripts.updater")
 
 local portal_updater = register_updater("hw-portal", portal.update_portal, true);
@@ -15,13 +16,7 @@ local updaters = {
 }
 
 local function init()
-    global.homeworld = {
-        tier = 1,
-        max_tier = 1,
-        population = 1000,
-        max_population = 1000,
-        stockpile = {},
-    }
+    global.homeworld = {}
     for _,u in pairs(updaters) do
         u.on_init()
     end
@@ -73,20 +68,21 @@ script.on_event(defines.events.on_robot_mined_entity, on_destroy)
 script.on_event(defines.events.on_entity_died, on_destroy)
 script.on_event(defines.events.script_raised_destroy, on_destroy)
 script.on_event(defines.events.on_tick, on_tick)
+script.on_configuration_changed(upgrade)
 
 commands.add_command("hw", {"homeworld-reloaded.command"}, portal.command)
 commands.add_command("homeworld", {"homeworld-reloaded.command"}, portal.command)
 commands.add_command("hwreset", {"homeworld-reloaded.resetcommand"}, function(event)
+    local player = game.players[event.player_index]
+    if not player.admin then
+        return
+    end
+
+    local force = player.force.name
     if event.parameter == "full" then
-        global.homeworld = {
-            tier = 1,
-            max_tier = 1,
-            population = 1000,
-            max_population = 1000,
-            stockpile = {},
-        }
+        global.homeworld[force] = nil
     elseif event.parameter == "stockpile" then
-        global.homeworld.stockpile = {}
+        global.homeworld[force].stockpile = {}
     end
     portal_updater.on_reinit()
     for _, updater in pairs(updaters) do

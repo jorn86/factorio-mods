@@ -94,7 +94,7 @@ return {
         return config
     end,
 
-    get_current_config = function()
-        return config[global.homeworld.tier]
+    get_current_config = function(homeworld)
+        return config[homeworld.tier]
     end
 }

@@ -76,13 +76,14 @@ end
 local function print_stockpile(player, forced)
     to_player(player, { "homeworld-reloaded.stockpile-contents" }, forced)
     local message = {}
+    local hw = get_homeworld(player.force)
     local add = function(item)
-        if global.homeworld.stockpile[item] then
+        if hw.stockpile[item] then
             table.insert(message, ",  ")
-            table.insert(message, tostring(math.floor(global.homeworld.stockpile[item])) .. " [img=item/" .. item .. "]")
+            table.insert(message, tostring(math.floor(hw.stockpile[item])) .. " [img=item/" .. item .. "]")
         end
     end
-    for _, r in pairs(config.get_current_config().requirements) do
+    for _, r in pairs(config.get_current_config(hw).requirements) do
         add(r.old)
         add(r.new)
     end
@@ -91,19 +92,20 @@ local function print_stockpile(player, forced)
 end
 
 local function check_achievements_for(player)
-    if global.homeworld.population >= 25000 then
+    local hw = get_homeworld(player.force)
+    if hw.population >= 25000 then
         player.unlock_achievement("hw-25k")
     end
-    if global.homeworld.population >= 100000 then
+    if hw.population >= 100000 then
         player.unlock_achievement("hw-100k")
     end
-    if global.homeworld.population >= 500000 then
+    if hw.population >= 500000 then
         player.unlock_achievement("hw-500k")
     end
 end
 
-local function check_achievements()
-    for _, player in pairs(game.players) do
+local function check_achievements(force)
+    for _, player in pairs(force.players) do
         check_achievements_for(player)
     end
 end
@@ -114,7 +116,7 @@ local function take_portal_items(reqs, name, stockpile, inventory, portal, index
     end)
     if requirements then
         local current = stockpile[name] or 0
-        local max = math.floor(requirements.count * global.homeworld.population * 2.5)
+        local max = math.floor(requirements.count * get_homeworld(portal.force).population * 2.5)
         if current < max then
             stockpile[name] = current + inventory[index].count
             local removed = inventory.remove(inventory[index])
@@ -126,8 +128,9 @@ local function take_portal_items(reqs, name, stockpile, inventory, portal, index
 end
 
 local function update_portal(portal)
-    local tier_settings = config.get_current_config()
-    local stockpile = global.homeworld.stockpile
+    local hw = get_homeworld(portal.force)
+    local tier_settings = config.get_current_config(hw)
+    local stockpile = hw.stockpile
     local inventory = portal.get_inventory(1)
     local any = false
     for index = 1, #inventory do
@@ -143,8 +146,6 @@ local function update_portal(portal)
     end
 end
 
-
-
 local function count_filled_slots(contents)
     local stacks = 0
     for item, count in pairs(contents) do
@@ -153,7 +154,7 @@ local function count_filled_slots(contents)
     return stacks
 end
 
-local function with_portal_for_rewards(consumer)
+local function with_portal_for_rewards(force, consumer)
     local best
     local best_empty = 0
     for _, surface in pairs(game.surfaces) do
@@ -181,8 +182,7 @@ local function with_portal_for_rewards(consumer)
     return false
 end
 
-local function deliver_rewards(rewards)
-    local hw = global.homeworld
+local function deliver_rewards(force, rewards)
     local success = with_portal_for_rewards(function(portal)
         local lost = false
         for _, r in pairs(rewards) do
@@ -193,19 +193,21 @@ local function deliver_rewards(rewards)
         return lost
     end)
 
-    if config.get_current_config().pop_max then
-        to_all_players({ "homeworld-reloaded.tier-up-first", hw.tier, config.get_current_config().pop_max }, true)
+    local hw = get_homeworld(force)
+    local cfg = config.get_current_config(hw)
+    if cfg.pop_max then
+        to_all_players(force, { "homeworld-reloaded.tier-up-first", hw.tier, cfg.pop_max }, true)
     else
-        to_all_players({ "homeworld-reloaded.tier-up-max", hw.tier }, true)
+        to_all_players(force, { "homeworld-reloaded.tier-up-max", hw.tier }, true)
     end
     if not success then
-        to_all_players({ "homeworld-reloaded.rewards-lost" }, false)
+        to_all_players(force, { "homeworld-reloaded.rewards-lost" }, false)
     end
 end
 
-local function deliver_repeating_rewards(rewards)
-    local hw = global.homeworld
+local function deliver_repeating_rewards(force, rewards)
     local reward_count = 0
+    local hw = get_homeworld(force)
     local success = with_portal_for_rewards(function(portal)
         local lost = false
         for _, r in pairs(rewards) do
@@ -217,70 +219,78 @@ local function deliver_repeating_rewards(rewards)
         return lost
     end)
 
-    to_all_players({ "homeworld-reloaded.max-tier-reward", reward_count }, false)
+    to_all_players(force, { "homeworld-reloaded.max-tier-reward", reward_count }, false)
     if not success then
-        to_all_players({ "homeworld-reloaded.rewards-lost" }, false)
+        to_all_players(force, { "homeworld-reloaded.rewards-lost" }, false)
     end
 end
 
-local function check_tier_update(requirements_for_repeating_met)
-    local hw = global.homeworld
-    local tier_settings = config.get_current_config()
+local function check_tier_update(force, requirements_for_repeating_met)
+    local hw = get_homeworld(force)
+    local tier_settings = config.get_current_config(hw)
     if tier_settings.pop_max and hw.population >= tier_settings.pop_max then
         hw.tier = hw.tier + 1
         if hw.max_tier < hw.tier then
             hw.max_tier = hw.tier
-            deliver_rewards(tier_settings.upgrade_rewards)
+            deliver_rewards(force, tier_settings.upgrade_rewards)
             for _, player in pairs(game.players) do
                 print_tier_details(player, hw.tier, false)
             end
-        elseif config.get_current_config().pop_max then
-            to_all_players({ "homeworld-reloaded.tier-up", hw.tier, config.get_current_config().pop_max }, false)
+        elseif config.get_current_config(hw).pop_max then
+            to_all_players(force, { "homeworld-reloaded.tier-up", hw.tier, config.get_current_config(hw).pop_max }, false)
         else
-            to_all_players({ "homeworld-reloaded.tier-up-max", hw.tier }, false)
+            to_all_players(force, { "homeworld-reloaded.tier-up-max", hw.tier }, false)
         end
     elseif hw.tier > 1 and hw.population <= tier_settings.pop_min then
         hw.tier = hw.tier - 1
-        to_all_players({ "homeworld-reloaded.tier-down", hw.tier, config.get_current_config().pop_min }, false)
+        to_all_players(force, { "homeworld-reloaded.tier-down", hw.tier, config.get_current_config(hw).pop_min }, false)
     elseif not tier_settings.pop_max and requirements_for_repeating_met then
-        deliver_repeating_rewards(tier_settings.recurring_rewards)
+        deliver_repeating_rewards(force, tier_settings.recurring_rewards)
     end
 end
 
-local function update_population(consumed)
-    local hw = global.homeworld
+local function update_population(force, consumed)
+    local hw = get_homeworld(force)
     local delta = math.floor(consumed.population_factor * hw.population)
     hw.population = hw.population + delta
+    if hw.population > hw.max_population then
+        hw.max_population = hw.population
+    end
     local lower_limit = config.get_config()[1].pop_min
     if consumed.upgrade_completion >= 1 and consumed.sustain_completion >= 1 then
         if delta < 0 then print(serpent.line(consumed)) end
-        if config.get_current_config().pop_max then
-            to_all_players({ "homeworld-reloaded.day-success", math.floor(consumed.upgrade_completion * 100), delta, hw.population }, false)
+        if config.get_current_config(hw).pop_max then
+            to_all_players(force, { "homeworld-reloaded.day-success", math.floor(consumed.upgrade_completion * 100), delta, hw.population }, false)
         else
-            to_all_players({ "homeworld-reloaded.day-success-max", math.floor(consumed.sustain_completion * 100), delta, hw.population }, false)
+            to_all_players(force, { "homeworld-reloaded.day-success-max", math.floor(consumed.sustain_completion * 100), delta, hw.population }, false)
         end
     elseif consumed.sustain_completion < 1 then
         if delta > 0 then print(serpent.line(consumed)) end
         if hw.population < lower_limit then
             hw.population = lower_limit
-            to_all_players({ "homeworld-reloaded.min-pop-reached" }, false)
+            to_all_players(force, { "homeworld-reloaded.min-pop-reached" }, false)
         else
-            to_all_players({ "homeworld-reloaded.day-fail", math.floor(consumed.sustain_completion * 100), -delta, hw.population }, false)
+            to_all_players(force, { "homeworld-reloaded.day-fail", math.floor(consumed.sustain_completion * 100), -delta, hw.population }, false)
         end
     else
-        to_all_players({ "homeworld-reloaded.day-no-change" , math.floor(consumed.upgrade_completion * 100) }, false)
+        to_all_players(force, { "homeworld-reloaded.day-no-change" , math.floor(consumed.upgrade_completion * 100) }, false)
     end
 end
 
 local function on_next_day()
-    local consumed = consume(config.get_current_config().requirements)
-    update_population(consumed)
+    for _, force in pairs(game.forces) do
+        if global.homeworld[force.name] ~= nil then
+            local hw = get_homeworld(force)
+            local consumed = consume(hw, config.get_current_config(hw).requirements)
+            update_population(force, consumed)
 
-    if consumed.sustain_completion >= 1 and consumed.upgrade_completion >= 1 then
-        check_achievements()
-        check_tier_update(true)
-    else
-        check_tier_update(false)
+            if consumed.sustain_completion >= 1 and consumed.upgrade_completion >= 1 then
+                check_achievements(force)
+                check_tier_update(force, true)
+            else
+                check_tier_update(force, false)
+            end
+        end
     end
 end
 
@@ -326,14 +336,15 @@ return {
                     print_tier_details(player, tier, true)
                 end
             elseif event.parameter:sub(1, 6) == "status" then
-                if config.get_current_config().pop_max then
-                    to_player(player, { "homeworld-reloaded.status", global.homeworld.tier, global.homeworld.population,
-                                        config.get_current_config().pop_max, global.homeworld.max_population }, true)
+                local hw = get_homeworld(player.force)
+                if config.get_current_config(hw).pop_max then
+                    to_player(player, { "homeworld-reloaded.status", hw.tier, hw.population,
+                                        config.get_current_config(hw).pop_max, hw.max_population }, true)
                 else
                     to_player(player, { "homeworld-reloaded.status-max",
-                                        global.homeworld.tier, global.homeworld.population, global.homeworld.max_population }, true)
+                                        hw.tier, hw.population, hw.max_population }, true)
                 end
-                print_tier_details(player, global.homeworld.tier, true)
+                print_tier_details(player, hw.tier, true)
             elseif event.parameter:sub(1, 5) == "stock" then
                 print_stockpile(player, true)
             end
