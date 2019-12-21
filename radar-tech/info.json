@@ -1,6 +1,6 @@
 {
   "name": "radar-tech",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "title": "Radar improvement research",
   "author": "Jorn86",
   "homepage": "https://github.com/jorn86/factorio-mods",
@@ -8,11 +8,12 @@
   "description": "Allows upgrading radar scanning distance and speed",
   "factorio_version": "0.17",
   "dependencies": [
-    "base >= 0.17.66",
+    "base >= 0.17.79",
     "? aai-programmable-structures >= 0.5.16",
     "? Big_Brother >= 0.5.1",
     "? bobwarfare >= 0.17.11",
     "? creative-mod >= 1.2.0",
+    "? IndustrialRevolution >= 1.0.8",
     "? ScanningRadar >= 0.3.2"
   ]
 }

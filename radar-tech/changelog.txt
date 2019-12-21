@@ -1,4 +1,9 @@
 ---------------------------------------------------------------------------------------------------
+Version: 0.0.3
+Date: 07.12.2019
+  Features:
+    - Added compatibility with Industrial Revolution, allowing you to upgrade the electric radar but leaving the Watchtower alone
+---------------------------------------------------------------------------------------------------
 Version: 0.0.2
 Date: 17.08.2019
   Features:

@@ -3,6 +3,7 @@ local blacklist = {
     "big_brother-surveillance-center", "big_brother-surveillance-small", -- big brother
     "creative-mod_super-radar", "creative-mod_super-radar-2", -- creative mod
     "scanning-radar", "scanning-radar-powerdump", -- scanning radar
+    "watchtower", -- industrial revolution
 }
 local function blacklisted(name)
     for _,n in pairs(blacklist) do
