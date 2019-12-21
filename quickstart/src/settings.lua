@@ -130,3 +130,10 @@ if mods["homeworld-reloaded"] then
         mod("hw", "hw-portal", "entity"),
     })
 end
+
+if mods["Mining_Drones"] then
+    data:extend({
+        mod("md", "mining-drone", "entity"),
+        mod("md", "mining-depot", "entity"),
+    })
+end

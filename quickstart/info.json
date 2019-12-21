@@ -1,6 +1,6 @@
 {
   "name": "quickstart",
-  "version": "0.0.8",
+  "version": "0.0.9",
   "title": "Configurable quick start",
   "author": "Jorn86",
   "homepage": "https://github.com/jorn86/factorio-mods",
@@ -13,6 +13,7 @@
     "? bobgreenhouse >= 0.17.0",
     "? bobplates >= 0.17.8",
     "? homeworld-reloaded >= 0.0.1",
+    "? Mining_Drones >= 0.1.5",
     "? Raven >= 0.1.5"
   ]
 }

@@ -93,6 +93,10 @@ local eventHandler = function(event)
         insertModded(p, "hw", "hw-sawmill")
         insertModded(p, "hw", "hw-portal")
     end
+    if (game.active_mods["Mining_Drones"]) then
+        insertModded(p, "md", "mining-drone")
+        insertModded(p, "md", "mining-depot")
+    end
 end
 
 script.on_event(defines.events.on_player_created, eventHandler)
