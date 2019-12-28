@@ -158,7 +158,7 @@ local function with_portal_for_rewards(force, consumer)
     local best
     local best_empty = 0
     for _, surface in pairs(game.surfaces) do
-        for _, portal in pairs(surface.find_entities_filtered { name = "hw-portal" }) do
+        for _, portal in pairs(surface.find_entities_filtered { name = "hw-portal", force = force }) do
             local inventory = portal.get_inventory(1)
 
             local empty = #inventory - count_filled_slots(inventory.get_contents())
@@ -183,7 +183,7 @@ local function with_portal_for_rewards(force, consumer)
 end
 
 local function deliver_rewards(force, rewards)
-    local success = with_portal_for_rewards(function(portal)
+    local success = with_portal_for_rewards(force, function(portal)
         local lost = false
         for _, r in pairs(rewards) do
             if portal.insert({ name = r.name, count = r.count }) < r.count then
@@ -208,7 +208,7 @@ end
 local function deliver_repeating_rewards(force, rewards)
     local reward_count = 0
     local hw = get_homeworld(force)
-    local success = with_portal_for_rewards(function(portal)
+    local success = with_portal_for_rewards(force, function(portal)
         local lost = false
         for _, r in pairs(rewards) do
             reward_count = math.floor(r.count * hw.population)
