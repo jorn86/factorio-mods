@@ -113,18 +113,29 @@ local function get_riding_state(v, o, t)
     return {direction = res.dir, acceleration = res.acc}
 end
 
+local function reset_cursor(player, config)
+    if player.clean_cursor() and config.last_item ~= nil then
+        local inventory = player.get_main_inventory()
+        player.cursor_stack.set_stack{name=config.last_item, count=inventory.remove{name=config.last_item, count=game.item_prototypes[config.last_item].stack_size}}
+        config.last_item = nil
+    end
+end
+
 script.on_event("mm-move", function(e)
     local config = get_config(e.player_index)
     local player = game.players[e.player_index]
     if player.cursor_stack.valid_for_read then
         if player.cursor_stack.name == "mm-target" then
-            player.cursor_stack.set_stack(config.last_item)
+            reset_cursor(player, config)
+            return
         else
             config.last_item = player.cursor_stack.name
+            if not player.clean_cursor() then
+                return
+            end
         end
-    else
-        player.cursor_stack.set_stack("mm-target")
     end
+    player.cursor_stack.set_stack("mm-target")
 end)
 
 script.on_event(defines.events.on_player_used_capsule, function(e)
@@ -137,12 +148,14 @@ script.on_event(defines.events.on_player_used_capsule, function(e)
     local setting = player.driving and "mm-drive" or "mm-walk"
     if player.mod_settings[setting].value == "hold" then
         player.cursor_stack.set_stack("mm-target")
+    else
+        reset_cursor(player, config)
     end
 end)
 
 script.on_event(defines.events.on_tick, function()
-    for player_index, config in pairs(global.targets) do
-        local player = game.players[player_index]
+    for _, config in pairs(global.targets) do
+        local player = game.players[config.player_index]
         if config.target and player and player.valid then
             if player.driving then
                 if get_direction(player.position, config.target, 6) then
