@@ -25,8 +25,24 @@ subprojects {
     assemble.dependsOn(zip)
 
     task deploy(type: Copy) {
-        from 'build'
-        into "${factorioInstallationFolder}\\mods"
+        from "$buildDir"
+        into "$factorioInstallationFolder\\mods"
     }
     deploy.dependsOn(build)
+
+    task modJson() {
+        doLast {
+            def info = new JsonSlurper().parse(file('info.json'))
+            def file = file("$buildDir/mod-list.json")
+            file.text = """{
+  "mods": [
+    { "name": "base", "enabled": true },
+    { "name": "creative-mod", "enabled": true },
+    { "name": "SetGameSpeed", "enabled": true },
+    { "name": "${info.name}", "enabled": true }
+  ]
+}"""
+        }
+    }
+    modJson.dependsOn(build)
 }
