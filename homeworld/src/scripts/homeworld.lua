@@ -233,7 +233,7 @@ local function check_tier_update(force, requirements_for_repeating_met)
         if hw.max_tier < hw.tier then
             hw.max_tier = hw.tier
             deliver_rewards(force, tier_settings.upgrade_rewards)
-            for _, player in pairs(game.players) do
+            for _, player in pairs(force.players) do
                 print_tier_details(player, hw.tier, false)
             end
         elseif config.get_current_config(hw).pop_max then
