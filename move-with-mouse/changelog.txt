@@ -1,4 +1,12 @@
 ---------------------------------------------------------------------------------------------------
+Version: 0.0.3
+Date: 06.01.2020
+  Features:
+    - Made the cursor reset work with ghosts
+    - Added a configurable timeout for the reset, to prevent using or building items with the same click as you used to move.
+  Known issues:
+    - The cursor reset will give you the first matching item (by name) in your inventory. This may cause the wrong item to be returned when using it with blueprints, upgrade planners, power armors, etc.
+---------------------------------------------------------------------------------------------------
 Version: 0.0.2
 Date: 06.01.2020
   Features:

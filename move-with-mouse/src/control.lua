@@ -113,10 +113,31 @@ local function get_riding_state(v, o, t)
     return {direction = res.dir, acceleration = res.acc}
 end
 
+local function find_item_in(inventory, item_name)
+    for i = 1, #inventory do
+        if inventory[i].valid_for_read and inventory[i].name == item_name then
+            return i
+        end
+    end
+    return -1
+end
+
 local function reset_cursor(player, config)
-    if player.clean_cursor() and config.last_item ~= nil then
+    if config.last_item ~= nil and player.cursor_stack.valid and not player.cursor_stack.valid_for_read then
+        local prototype = game.item_prototypes[config.last_item]
         local inventory = player.get_main_inventory()
-        player.cursor_stack.set_stack{name=config.last_item, count=inventory.remove{name=config.last_item, count=game.item_prototypes[config.last_item].stack_size}}
+        if prototype.inventory_size ~= nil then
+            player.print({"mm-returnfailed", config.last_item})
+        else
+            local index = find_item_in(inventory, config.last_item)
+            if index > 0 then
+                player.cursor_stack.transfer_stack(inventory[index])
+            elseif prototype.place_result ~= nil then
+                player.cursor_ghost = config.last_item
+            else
+                player.print({"mm-returnfailed", config.last_item})
+            end
+        end
         config.last_item = nil
     end
 end
@@ -126,20 +147,28 @@ script.on_event("mm-move", function(e)
     local player = game.players[e.player_index]
     if player.cursor_stack.valid_for_read then
         if player.cursor_stack.name == "mm-target" then
+            player.clean_cursor()
             reset_cursor(player, config)
             return
         else
             config.last_item = player.cursor_stack.name
-            if not player.clean_cursor() then
-                return
-            end
         end
+    elseif player.cursor_ghost and player.cursor_ghost.valid then
+        config.last_item = player.cursor_ghost.name
+    else
+        config.last_item = nil
     end
+
+    if not player.clean_cursor() then
+        return
+    end
+
     player.cursor_stack.set_stack("mm-target")
 end)
 
 script.on_event(defines.events.on_player_used_capsule, function(e)
     if e.item.name ~= "mm-target" then return end
+
     local config = get_config(e.player_index)
     local player = game.players[e.player_index]
     clear_sprites(config)
@@ -149,13 +178,21 @@ script.on_event(defines.events.on_player_used_capsule, function(e)
     if player.mod_settings[setting].value == "hold" then
         player.cursor_stack.set_stack("mm-target")
     else
-        reset_cursor(player, config)
+        config.reset_timeout = player.mod_settings["mm-resettimeout"].value
     end
 end)
 
 script.on_event(defines.events.on_tick, function()
     for _, config in pairs(global.targets) do
         local player = game.players[config.player_index]
+
+        if config.reset_timeout ~= nil and config.reset_timeout > 0 then
+            config.reset_timeout = config.reset_timeout - 1
+            if config.reset_timeout == 0 then
+                reset_cursor(player, config)
+            end
+        end
+
         if config.target and player and player.valid then
             if player.driving then
                 if get_direction(player.position, config.target, 6) then

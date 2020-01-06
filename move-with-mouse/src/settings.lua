@@ -15,4 +15,13 @@ data:extend({
         default_value = "hold",
         allowed_values = { "click", "hold" }
     },
+    {
+        type = "int-setting",
+        name = "mm-resettimeout",
+        setting_type = "runtime-per-user",
+        order = "mm-03",
+        min_value = 1,
+        default_value = 5,
+        max_value = 60
+    },
 })
