@@ -1,4 +1,9 @@
 ---------------------------------------------------------------------------------------------------
+Version: 0.1.0
+Date: 06.01.2020
+  Features:
+    - Rebuilt the runtime code to use the remote interfaces, instead of directly inserting to the inventory
+---------------------------------------------------------------------------------------------------
 Version: 0.0.10
 Date: 28.12.2019
   Features:

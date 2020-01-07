@@ -1,111 +1,29 @@
-local function insert(player, setting, item)
-    local amount = settings.global[setting].value
-    if (amount > 0) then
-        player.insert({name=item, count=amount})
+local items = require("items")
+local clear = settings.global["quickstart-clear"].value
+
+local function add(config)
+    for _, item in pairs(items) do
+        if game.active_mods[item.mod] then
+            local amount = settings.global["quickstart-" .. item.item].value
+            if amount > 0 then
+                config[item.item] = amount
+            end
+        end
     end
+    return config
 end
 
-local function insertVanilla(player, name)
-    insert(player,"quickstart-" .. name, name)
+local function call(field)
+    local config = {}
+    if not clear then
+        config = remote.call("freeplay", "get_" .. field)
+    end
+    remote.call("freeplay", "set_" .. field, add(config))
 end
 
-local function insertModded(player, mod, name)
-    insert(player,"quickstart-" .. mod .. "-" .. name, name)
-end
-
-local eventHandler = function(event)
-    local p = game.get_player(event.player_index)
-    if settings.global["quickstart-clear"].value then
-        p.get_inventory(defines.inventory.character_main).clear()
-        p.get_inventory(defines.inventory.character_guns).clear()
-        p.get_inventory(defines.inventory.character_ammo).clear()
-        p.get_inventory(defines.inventory.character_armor).clear()
+script.on_init(function()
+    call("created_items")
+    if settings.global["quickstart-respawn"].value then
+        call("respawn_items")
     end
-
-    insertVanilla(p,"modular-armor")
-    insertVanilla(p,"power-armor")
-    insertVanilla(p,"power-armor-mk2")
-    insertVanilla(p,"solar-panel-equipment")
-    insertVanilla(p,"fusion-reactor-equipment")
-    insertVanilla(p,"night-vision-equipment")
-    insertVanilla(p,"exoskeleton-equipment")
-    insertVanilla(p,"belt-immunity-equipment")
-    insertVanilla(p,"battery-equipment")
-    insertVanilla(p,"battery-mk2-equipment")
-    insertVanilla(p,"personal-roboport-equipment")
-    insertVanilla(p,"personal-roboport-mk2-equipment")
-    insertVanilla(p,"personal-laser-defense-equipment")
-    insertVanilla(p,"construction-robot")
-    insertVanilla(p,"iron-plate")
-    insertVanilla(p,"copper-plate")
-    insertVanilla(p,"transport-belt")
-    insertVanilla(p,"underground-belt")
-    insertVanilla(p,"splitter")
-    insertVanilla(p,"fast-transport-belt")
-    insertVanilla(p,"fast-underground-belt")
-    insertVanilla(p,"fast-splitter")
-    insertVanilla(p,"assembling-machine-1")
-    insertVanilla(p,"assembling-machine-2")
-    insertVanilla(p,"pipe")
-    insertVanilla(p,"pipe-to-ground")
-    insertVanilla(p,"boiler")
-    insertVanilla(p,"steam-engine")
-    insertVanilla(p,"offshore-pump")
-    insertVanilla(p,"small-electric-pole")
-    insertVanilla(p,"medium-electric-pole")
-    insertVanilla(p,"big-electric-pole")
-    insertVanilla(p,"landfill")
-    insertVanilla(p,"burner-mining-drill")
-    insertVanilla(p,"electric-mining-drill")
-    insertVanilla(p,"stone-furnace")
-    insertVanilla(p,"steel-furnace")
-    insertVanilla(p,"electric-furnace")
-    insertVanilla(p,"burner-inserter")
-    insertVanilla(p,"inserter")
-    insertVanilla(p,"long-handed-inserter")
-    insertVanilla(p,"fast-inserter")
-    insertVanilla(p,"lab")
-    insertVanilla(p,"radar")
-    insertVanilla(p,"pistol")
-    insertVanilla(p,"submachine-gun")
-    insertVanilla(p,"gun-turret")
-    insertVanilla(p,"firearm-magazine")
-    insertVanilla(p,"piercing-rounds-magazine")
-    insertVanilla(p,"cliff-explosives")
-    insertVanilla(p,"car")
-
-    if (game.active_mods["aai-industry"]) then
-        insertModded(p, "aai", "glass")
-        insertModded(p, "aai", "burner-turbine")
-        insertModded(p, "aai", "small-iron-electric-pole")
-        insertModded(p, "aai", "burner-lab")
-    end
-    if (game.active_mods["bobgreenhouse"]) then
-        insertModded(p, "bob", "bob-greenhouse")
-    end
-    if (game.active_mods["bobplates"]) then
-        insertModded(p, "bob", "chemical-boiler")
-        insertModded(p, "bob", "bob-distillery")
-        insertModded(p, "bob", "electrolyser")
-        insertModded(p, "bob", "mixing-furnace")
-    end
-    if (game.active_mods["Raven"]) then
-        insertModded(p, "raven", "raven-1")
-    end
-    if (game.active_mods["homeworld-reloaded"]) then
-        insertModded(p, "hw", "hw-farm")
-        insertModded(p, "hw", "hw-fishery")
-        insertModded(p, "hw", "hw-brewery")
-        insertModded(p, "hw", "hw-sawmill")
-        insertModded(p, "hw", "hw-portal")
-    end
-    if (game.active_mods["Mining_Drones"]) then
-        insertModded(p, "md", "mining-drone")
-        insertModded(p, "md", "mining-depot")
-    end
-end
-
-script.on_event(defines.events.on_player_created, eventHandler)
-script.on_event(defines.events.on_player_respawned, function(event)
-    if (settings.global["quickstart-respawn"].value) then eventHandler(event) end
 end)
