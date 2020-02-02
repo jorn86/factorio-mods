@@ -1,5 +1,10 @@
 ---------------------------------------------------------------------------------------------------
+Version: 0.1.0
+Date: 02.02.2020
+  Changes:
+    - Upgraded to Factorio 0.18
+---------------------------------------------------------------------------------------------------
 Version: 0.0.1
 Date: 25.05.2019
   Features:
-    - Initial release. Disables the FTL theory A trough D1&2, and replaces them with a single research that unlocks a different type of satellite. Updates the final FTL tech to require science provided by launching that satellite.
+    - Initial release. Disables the FTL theory A through D1&2, and replaces them with a single research that unlocks a different type of satellite. Updates the final FTL tech to require science provided by launching that satellite.

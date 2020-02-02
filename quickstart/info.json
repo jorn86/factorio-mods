@@ -1,19 +1,19 @@
 {
   "name": "quickstart",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "title": "Configurable quick start",
   "author": "Jorn86",
   "homepage": "https://github.com/jorn86/factorio-mods",
   "contact": "factoriomods@hertsig.org",
   "description": "Allows configurable starting equipment, anything from equipment and bots to steam engines and miners",
-  "factorio_version": "0.17",
+  "factorio_version": "0.18",
   "dependencies": [
-    "base >= 0.17.79",
-    "? aai-industry >= 0.3.6",
-    "? bobgreenhouse >= 0.17.0",
-    "? bobplates >= 0.17.8",
-    "? homeworld-reloaded >= 0.0.1",
-    "? Mining_Drones >= 0.1.5",
-    "? Raven >= 0.1.5"
+    "base >= 0.18.3",
+    "? aai-industry >= 0.4.2",
+    "? bobgreenhouse >= 0.18.0",
+    "? bobplates >= 0.18.1",
+    "? homeworld-reloaded >= 0.3.0",
+    "? Mining_Drones >= 0.3.2",
+    "? Raven >= 0.1.9"
   ]
 }

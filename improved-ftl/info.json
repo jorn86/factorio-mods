@@ -1,11 +1,14 @@
 {
   "name": "improved-ftl",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "title": "Improved SpaceX FTL research",
   "author": "Jorn86",
   "homepage": "https://github.com/jorn86/factorio-mods",
   "contact": "factoriomods@hertsig.org",
   "description": "Replaces the Space Extension mod's FTL research which requires massive amounts of early science packs, with something more interesting",
-  "factorio_version": "0.17",
-  "dependencies": ["base >= 0.17.43", "SpaceMod >= 0.4.3"]
+  "factorio_version": "0.18",
+  "dependencies": [
+    "base >= 0.18.3",
+    "SpaceMod >= 0.5.0"
+  ]
 }

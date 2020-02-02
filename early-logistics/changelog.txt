@@ -1,4 +1,10 @@
 ---------------------------------------------------------------------------------------------------
+Version: 0.1.0
+Date: 02.02.2020
+  Changes:
+    - Upgraded to Factorio 0.18
+    - Removed optional dependency (compatibility) with IndustrialRevolution, as it's not updated for 0.18. I'll restore it if it is updated.
+---------------------------------------------------------------------------------------------------
 Version: 0.0.3
 Date: 10.09.2019
   Features:

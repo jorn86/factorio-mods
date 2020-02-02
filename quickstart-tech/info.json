@@ -1,13 +1,13 @@
 {
   "name": "quickstart-tech",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "title": "Configurable quick start: Technology",
   "author": "Jorn86",
   "homepage": "https://github.com/jorn86/factorio-mods",
   "contact": "factoriomods@hertsig.org",
   "description": "Allows unlocking early game technology on game start",
-  "factorio_version": "0.17",
+  "factorio_version": "0.18",
   "dependencies": [
-    "base >= 0.17.43"
+    "base >= 0.18.3"
   ]
 }

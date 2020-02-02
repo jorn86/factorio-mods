@@ -170,11 +170,11 @@ local function with_portal_for_rewards(force, consumer)
     end
 
     if best then
-        local bar = best.getbar()
-        best.setbar()
+        local bar = best.get_bar()
+        best.set_bar()
         local lost = consumer(best)
         best.sort_and_merge()
-        best.setbar(bar)
+        best.set_bar(bar)
         return not lost
     end
 

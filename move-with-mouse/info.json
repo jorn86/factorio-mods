@@ -1,13 +1,13 @@
 {
   "name": "move-with-mouse",
-  "version": "0.0.3",
+  "version": "0.1.0",
   "title": "Move with the mouse",
   "author": "Jorn86",
   "homepage": "https://github.com/jorn86/factorio-mods",
   "contact": "factoriomods@hertsig.org",
   "description": "Allows you to move your player character using the mouse, instead of WASD keys",
-  "factorio_version": "0.17",
+  "factorio_version": "0.18",
   "dependencies": [
-    "base >= 0.17.79"
+    "base >= 0.18.3"
   ]
 }
