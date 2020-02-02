@@ -1,4 +1,9 @@
 ---------------------------------------------------------------------------------------------------
+Version: 0.2.4
+Date: 02.02.2020
+  Bugfixes:
+    - Fixed bug that sometimes caused maximum population increase when upgrade requirements were below 200%
+---------------------------------------------------------------------------------------------------
 Version: 0.2.3
 Date: 05.01.2020
   Bugfixes:

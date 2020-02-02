@@ -259,7 +259,7 @@ local function update_population(force, consumed)
     local lower_limit = config.get_config()[1].pop_min
     if consumed.upgrade_completion >= 1 and consumed.sustain_completion >= 1 then
         if delta < 0 then print(serpent.line(consumed)) end
-        if config.get_current_config(hw).pop_max then
+        if config.get_current_config(hw).pop_max ~= nil then
             to_all_players(force, { "homeworld-reloaded.day-success", math.floor(consumed.upgrade_completion * 100), delta, hw.population }, false)
         else
             to_all_players(force, { "homeworld-reloaded.day-success-max", math.floor(consumed.sustain_completion * 100), delta, hw.population }, false)
@@ -281,7 +281,7 @@ local function on_next_day()
     for _, force in pairs(game.forces) do
         if global.homeworld[force.name] ~= nil then
             local hw = get_homeworld(force)
-            local consumed = consume(hw, config.get_current_config(hw).requirements)
+            local consumed = consume(hw)
             update_population(force, consumed)
 
             if consumed.sustain_completion >= 1 and consumed.upgrade_completion >= 1 then
