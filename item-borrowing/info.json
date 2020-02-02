@@ -1,0 +1,11 @@
+{
+  "name": "item-borrowing",
+  "version": "0.0.1",
+  "title": "Item borrowing",
+  "author": "Jorn86",
+  "homepage": "https://github.com/jorn86/factorio-mods",
+  "contact": "factoriomods@hertsig.org",
+  "description": "Allows you to 'borrow' items using a console command. Repaying loans might be added in a later version.",
+  "factorio_version": "0.18",
+  "dependencies": ["base >= 0.18.6"]
+}
