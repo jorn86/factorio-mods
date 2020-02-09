@@ -81,6 +81,8 @@ return {
     mod("homeworld-reloaded", "hw-brewery", "entity"),
     mod("homeworld-reloaded", "hw-sawmill", "entity"),
     mod("homeworld-reloaded", "hw-portal", "entity"),
+    mod("LoaderRedux", "loader", "entity"),
+    mod("LoaderRedux", "fast-loader", "entity"),
     mod("Mining_Drones", "mining-drone"),
     mod("Mining_Drones", "mining-depot"),
 }
