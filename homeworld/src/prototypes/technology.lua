@@ -3,7 +3,7 @@ data:extend({
         type = "technology",
         name = "hw-fishing",
         icon = "__base__/graphics/icons/fish.png",
-        icon_size = 32,
+        icon_size = 64,
         effects = {
             { type = "unlock-recipe", recipe = "hw-fishery" },
             { type = "unlock-recipe", recipe = "hw-fish" },
@@ -249,7 +249,7 @@ data:extend({
         type = "technology",
         name = "hw-combinator",
         icon = "__base__/graphics/icons/constant-combinator.png",
-        icon_size = 32,
+        icon_size = 64,
         prerequisites = { "hw-portal", "circuit-network" },
         effects = {
             { type = "unlock-recipe", recipe = "hw-requirements-combinator" },

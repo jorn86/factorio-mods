@@ -210,7 +210,7 @@ if settings.startup["hw-wood"].value then
             type = "recipe",
             name = "hw-wood",
             icon = "__base__/graphics/icons/wood.png",
-            icon_size = 32,
+            icon_size = 64,
             enabled = false,
             always_show_made_in = true,
             category = "hw-farm",

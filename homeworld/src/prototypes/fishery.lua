@@ -7,7 +7,7 @@ data:extend({
         type = "assembling-machine",
         name = "hw-fishery",
         icon = "__base__/graphics/icons/fish.png",
-        icon_size = 32,
+        icon_size = 64,
         flags = { "player-creation", "placeable-player" },
         minable = { mining_time = 0.3, result = "hw-fishery" },
         max_health = 50,
