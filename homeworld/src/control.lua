@@ -16,6 +16,7 @@ local updaters = {
 }
 
 local function init()
+    config.validate()
     global.homeworld = {}
     for _,u in pairs(updaters) do
         u.on_init()
