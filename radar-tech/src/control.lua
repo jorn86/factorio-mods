@@ -2,8 +2,9 @@ local blacklist = {
     "path-scan", "tile-scan", "unit-scan", "unitdata-scan", "zone-scan", -- aai programmable structures
     "big_brother-surveillance-center", "big_brother-surveillance-small", -- big brother
     "creative-mod_super-radar", "creative-mod_super-radar-2", -- creative mod
-    "scanning-radar", "scanning-radar-powerdump", -- scanning radar
     "watchtower", -- industrial revolution
+    "kr-sentinel", "advanced-radar", -- krastorio 2
+    "scanning-radar", "scanning-radar-powerdump", -- scanning radar
 	"vehicular-tracker", "train-tracker", -- vehicle-radar
 }
 local function blacklisted(name)

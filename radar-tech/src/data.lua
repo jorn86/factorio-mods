@@ -1,17 +1,21 @@
 local tiers = settings.startup["radar-tech-tiers"].value
 local base = data.raw["radar"]["radar"]
 
-for tier = 1,tiers do
-    local radar = table.deepcopy(base)
-    radar.name = "rt-radar-" .. tier
-    radar.localised_name = { "entity-name.radar" }
-    radar.order = "rt-radar-" .. tier
+local function update(tier, radar)
     radar.energy_usage = (tier + 3) * 100 .. "kW"
     radar.energy_per_sector = (tier + 10) * 1000 .. "kJ"
     radar.max_distance_of_sector_revealed = (tier + 7) * 2
     radar.max_distance_of_nearby_sector_revealed = tier + 3
     radar.rotation_speed = (tier + 10) * 0.001
     radar.placeable_by = { item = "radar", count = 1 }
+end
+
+for tier = 1,tiers do
+    local radar = table.deepcopy(base)
+    radar.name = "rt-radar-" .. tier
+    radar.localised_name = { "entity-name.radar" }
+    radar.order = "rt-radar-" .. tier
+    update(tier, radar)
     data:extend({ radar })
 end
 
