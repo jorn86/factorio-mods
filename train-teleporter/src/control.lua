@@ -139,11 +139,8 @@ local function copy(from_car, to_car)
     for name, amount in pairs(from_car.get_fluid_contents()) do
         to_car.insert_fluid({ name = name, amount = amount})
     end
-    copy_inventory(from_car, to_car, defines.inventory.fuel)
-    copy_inventory(from_car, to_car, defines.inventory.burnt_result)
-    copy_inventory(from_car, to_car, defines.inventory.chest)
     copy_inventory(from_car, to_car, defines.inventory.cargo_wagon)
-    copy_inventory(from_car, to_car, defines.inventory.artillery_wagon_ammo)
+    copy_inventory(from_car, to_car, defines.inventory.burnt_result)
 end
 
 local function check(train)

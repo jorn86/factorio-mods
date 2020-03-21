@@ -1,11 +1,11 @@
 {
   "name": "train-teleporter",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "title": "Train teleporter",
   "author": "Jorn86",
   "homepage": "https://github.com/jorn86/factorio-mods",
   "contact": "factoriomods@hertsig.org",
   "description": "Allows you to teleport any train from one stop to another, even between surfaces. Experimental release, no guarantees about long-term support or stability.",
   "factorio_version": "0.18",
-  "dependencies": ["base >= 0.18.3"]
+  "dependencies": ["base >= 0.18.15"]
 }
