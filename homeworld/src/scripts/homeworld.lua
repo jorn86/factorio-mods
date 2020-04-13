@@ -120,7 +120,9 @@ local function take_portal_items(reqs, name, stockpile, inventory, portal, index
         if current < max then
             stockpile[name] = current + inventory[index].count
             local removed = inventory.remove(inventory[index])
-            portal.force.item_production_statistics.on_flow(name, -removed)
+            if settings.global["hw-stats"].value then
+                portal.force.item_production_statistics.on_flow(name, -removed)
+            end
             return true
         end
     end
@@ -169,17 +171,20 @@ local function with_portal_for_rewards(force, consumer)
         end
     end
 
-    if best then
-        local bar = best.get_bar()
-        best.set_bar()
-        local lost = consumer(best)
-        best.sort_and_merge()
-        best.set_bar(bar)
-        return not lost
+    if not best then
+        print("no portals with empty slots found at all")
+        return false
     end
 
-    print("no portals with empty slots found at all")
-    return false
+    local bar = best.get_bar()
+    best.set_bar()
+    local lost = consumer(best)
+    best.sort_and_merge()
+    best.set_bar(bar)
+    for _, player in pairs(force.players) do
+        player.add_custom_alert(best.entity_owner, { type = "item", name = "hw-portal" }, { "homeworld-reloaded.delivered" }, false)
+    end
+    return not lost
 end
 
 local function deliver_rewards(force, rewards)

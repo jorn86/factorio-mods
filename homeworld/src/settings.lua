@@ -7,6 +7,12 @@ data:extend({
     },
     {
         type = "bool-setting",
+        name = "hw-stats",
+        default_value = true,
+        setting_type = "runtime-global",
+    },
+    {
+        type = "bool-setting",
         name = "hw-wood",
         default_value = true,
         setting_type = "startup",
