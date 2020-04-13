@@ -4,6 +4,7 @@ local blacklist = {
     "creative-mod_super-radar", "creative-mod_super-radar-2", -- creative mod
     "watchtower", -- industrial revolution
     "kr-sentinel", "advanced-radar", -- krastorio 2
+    "py-local-radar", "megadar", -- py industry
     "scanning-radar", "scanning-radar-powerdump", -- scanning radar
 	"vehicular-tracker", "train-tracker", -- vehicle-radar
 }
@@ -73,5 +74,5 @@ commands.add_command("resetradars", { "rt-radar.command" }, function(event)
             end
         end
     end
-    game.players[event.player_index].print({ "rt-radar.removed" })
+    game.print({ "rt-radar.removed" })
 end)
