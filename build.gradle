@@ -1,6 +1,6 @@
 import groovy.json.JsonSlurper
 
-def factorioInstallationFolder = 'C:\\Factorio_standalone'
+def modsFolder = 'C:\\Factorio_standalone\\mods'
 
 subprojects {
     apply plugin: 'base'
@@ -25,13 +25,22 @@ subprojects {
     assemble.dependsOn(zip)
 
     task deploy(type: Copy) {
-        from "$buildDir"
-        into "$factorioInstallationFolder\\mods"
+        from buildDir
+        into modsFolder
+        dependsOn(build)
     }
-    deploy.dependsOn(build)
+
+    task cleanDeploy(type: Delete) {
+        doFirst {
+            def info = new JsonSlurper().parse(file('info.json'))
+            delete fileTree(modsFolder)
+                .filter { it.isFile() && it.name.startsWith(info.name) }
+                .files
+        }
+    }
 
     task modJson() {
-        doLast {
+        doFirst {
             def info = new JsonSlurper().parse(file('info.json'))
             def file = file("$buildDir/mod-list.json")
             file.text = """{
@@ -43,6 +52,7 @@ subprojects {
   ]
 }"""
         }
+        dependsOn(cleanDeploy)
     }
     modJson.dependsOn(build)
 }
