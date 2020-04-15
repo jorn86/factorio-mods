@@ -1,3 +1,4 @@
+include "barrel-only"
 include "big-factories"
 include "early-logistics"
 include "homeworld"

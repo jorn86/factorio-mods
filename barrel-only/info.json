@@ -1,0 +1,22 @@
+{
+  "name": "barrel-only",
+  "version": "0.0.1",
+  "title": "Barrel only",
+  "author": "Jorn86",
+  "homepage": "https://github.com/jorn86/factorio-mods",
+  "contact": "factoriomods@hertsig.org",
+  "description": "Replaces all recipes that use fluids, with recipes that use barreled fluids",
+  "factorio_version": "0.18",
+  "dependencies": [
+    "base >= 0.18.18",
+    "? dirtybarrels >= 0.1.66",
+    "! Barrel-Size",
+    "! bobplates",
+    "! bobrevamp",
+    "! Krastorio2",
+    "! pycoalprocessing",
+    "! pyfusionenergy",
+    "! SIExtensionBarrel",
+    "! space-exploration"
+  ]
+}
