@@ -23,7 +23,7 @@ local function find_to_record(schedule, station)
     end
 
     local wait_condition = from_record.wait_conditions[1]
-    if wait_condition.type ~= "circuit" then
+    if wait_condition.type ~= "circuit" or wait_condition.condition == nil then
         return nil
     end
 
