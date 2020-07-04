@@ -1,11 +1,14 @@
 local blacklist = {
     "path-scan", "tile-scan", "unit-scan", "unitdata-scan", "zone-scan", -- aai programmable structures
     "big_brother-surveillance-center", "big_brother-surveillance-small", -- big brother
+    "or_radar", -- cargo ships (oil rig radar)
     "creative-mod_super-radar", "creative-mod_super-radar-2", -- creative mod
     "watchtower", -- industrial revolution
     "kr-sentinel", "advanced-radar", -- krastorio 2
     "py-local-radar", "megadar", -- py industry
+    "robosubstation-radar", -- robosubstation
     "scanning-radar", "scanning-radar-powerdump", -- scanning radar
+    "Schall-pickup-tower-R32-upper", "Schall-pickup-tower-R64-upper", -- schall pickup tower
 	"vehicular-tracker", "train-tracker", -- vehicle-radar
 }
 local function blacklisted(name)

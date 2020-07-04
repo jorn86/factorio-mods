@@ -1,4 +1,11 @@
 ---------------------------------------------------------------------------------------------------
+Version: 0.1.4
+Date: 17.05.2020
+  Features:
+    - Added compatibility with Cargo Ships (the Oil Rig has its own internal radar entity)
+    - Added compatibility with Robosubstation
+    - Added compatibility with Schall Pickup Tower
+---------------------------------------------------------------------------------------------------
 Version: 0.1.3
 Date: 13.04.2020
   Features:
