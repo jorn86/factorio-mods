@@ -20,8 +20,8 @@ data:extend({
         name = "mm-resettimeout",
         setting_type = "runtime-per-user",
         order = "mm-03",
-        min_value = 1,
+        minimum_value = 1,
         default_value = 5,
-        max_value = 60
+        maximum_value = 60
     },
 })
