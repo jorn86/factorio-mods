@@ -43,7 +43,9 @@ local function borrow(player, amount, item)
 end
 
 local function borrow_command(event)
+    if (event.player_index == nil or event.parameter == nil) then return end
     local player = game.players[event.player_index]
+    player.print(event.parameter)
     local amount, item = string.match(event.parameter, '(%d*)%s*(.*)')
     borrow(player, tonumber(amount), parse_item(item))
 end
