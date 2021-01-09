@@ -41,7 +41,7 @@ local big_technology = function(def)
         type = "technology",
         name = def.big_name,
         localised_name = big_localised_name(item),
-        icon = original_tech.icon,
+        icons = original_tech.icons,
         icon_size = original_tech.icon_size,
         prerequisites = { "bf-construction" },
         effects = {{ type = "unlock-recipe", recipe = def.big_name }},
