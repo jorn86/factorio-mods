@@ -1,26 +1,43 @@
+local difficult_technologies = {
+    "utility-science-pack",
+    "production-science-pack",
+    "space-science-pack",
+    "se-rocket-science-pack"
+}
+
 local function removePacks(name)
     local tech = data.raw.technology[name]
     if not tech then
-        print(name .. ' does not exist')
+        log(name .. ' does not exist')
         return
     end
 
     for i, item in pairs(tech.unit.ingredients) do
-        if item[1] == 'utility-science-pack' then
-            table.remove(tech.unit.ingredients, i)
-        end
-        if item[1] == 'production-science-pack' then
-            table.remove(tech.unit.ingredients, i)
+        log(name .. ' ingredient ' .. i .. ':' .. item[1])
+    end
+
+    for i = #tech.unit.ingredients, 1, -1 do
+        local ingredient = tech.unit.ingredients[i][1]
+        for _, difficult in pairs(difficult_technologies) do
+            if ingredient == difficult then
+                log ('Removing ingredient ' .. i .. ': ' .. ingredient .. ' from ' .. name)
+                table.remove(tech.unit.ingredients, i)
+            end
         end
     end
 
     if tech.prerequisites then
         for i, prereq in pairs(tech.prerequisites) do
-            if prereq == 'utility-science-pack' then
-                tech.prerequisites[i] = 'chemical-science-pack'
-            end
-            if prereq == 'production-science-pack' then
-                tech.prerequisites[i] = 'chemical-science-pack'
+            log(name .. ' prerequisite ' .. i .. ':' .. prereq)
+        end
+
+        for i = #tech.prerequisites, 1, -1 do
+            local prereq = tech.prerequisites[i]
+            for _, difficult in pairs(difficult_technologies) do
+                if prereq == difficult then
+                    log ('Removing prerequisite ' .. i .. ':' .. prereq .. ' from ' .. name)
+                    table.remove(tech.prerequisites, i);
+                end
             end
         end
     end
